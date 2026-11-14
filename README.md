@@ -5,7 +5,6 @@
 **Academic Period:** 2026-2  
 **Evaluation Target:** 100% Rubric Compliance (5.0 / 5.0)
 
-> *Nota: Para la versión integral en español de esta documentación técnica, consulte [README_ES.md](README_ES.md). Para la preparación de la sustentación oral individual (30%), consulte [GUIA_EXPLICACION_PROYECTO.md](GUIA_EXPLICACION_PROYECTO.md).*
 
 ---
 
@@ -48,7 +47,7 @@ This engineering project delivers a robust, event-driven **Streaming ETL archite
   Raw Historical Datasets (2015.csv - 2019.csv in data/raw/)
                │
                ▼
-  EDA & Harmonization Engine (notebooks/eda.ipynb, src/harmonization.py)
+  EDA & Harmonization Engine (notebooks/eda.ipynb)
   - Column mapping across 5 years to lower-case snake_case
   - Regional metadata imputation from invariant country mapping
   - Longitudinal imputation of missing UAE corruption value (0.3400)
@@ -57,7 +56,7 @@ This engineering project delivers a robust, event-driven **Streaming ETL archite
   Unified Master Dataset (data/processed/happiness_unified.csv) [782 rows]
                │
                ▼
-  Scikit-Learn Pipeline Training (notebooks/model_training.ipynb, src/train_model.py)
+  Scikit-Learn Pipeline Training (notebooks/model_training.ipynb)
   - Train/Test Split: 70% Train (547 rows) / 30% Test (235 rows), random_state=42
   - Target Leakage Elimination (dropped Rank, Standard Error, Dystopia Residual)
   - Pipeline: SimpleImputer(median) -> StandardScaler() -> RandomForestRegressor()
@@ -111,7 +110,7 @@ This engineering project delivers a robust, event-driven **Streaming ETL archite
 └────────────────────────────────────────────────────────────────────────────────────────┘
   PostgreSQL 16 Analytical Warehouse (Port 6432, Database: happiness_db)
                │
-               ├─► SQL Analytical Queries (sql/kpis.sql, src/run_kpis.py)
+               ├─► SQL Analytical Queries (sql/kpis.sql)
                │   - KPI 1: Regional MAE & RMSE Error Distribution
                │   - KPI 2: Country Residual Profiles & Top Divergent Nations
                │   - KPI 3: Real vs Predicted Accuracy Brackets (<0.25, 0.25-0.50, >0.50)
@@ -119,9 +118,7 @@ This engineering project delivers a robust, event-driven **Streaming ETL archite
                │   - Ingestion Audit: Fault Tolerance Resilience (782 Valid / 4 Corrupt)
                │
                └─► Power BI Desktop Dashboard (dashboards/)
-                   - Workshop3_Happiness_Dashboard.pbit (Pre-built template)
-                   - Workshop3_Happiness.pbip (Modern Power BI Project)
-                   - ABRIR_DASHBOARD_POWER_BI.bat (1-Click desktop launcher)
+                   - Workshop3_Happiness_Dashboard.pbit (Official Power BI template)
                    - Native Direct Connection to PostgreSQL Star Schema
 ```
 
@@ -141,7 +138,7 @@ Across the 5 observation years (2015–2019), the raw datasets provided by the U
 | **2019** | `2019.csv` | 156 | 9 | `Score` | `Social support` | `Perceptions of corruption` | No (Omitted) |
 
 ### 3.2 Harmonization & Imputation Methodology
-To resolve these discrepancies, `src/harmonization.py` and `notebooks/eda.ipynb` execute a deterministic normalization protocol:
+To resolve these discrepancies, `notebooks/eda.ipynb` executes a deterministic normalization protocol:
 
 1. **Column Mapping Table:**
    - Country Identifier: `Country` / `Country or region` $\rightarrow$ `country`
@@ -373,7 +370,7 @@ Implemented in [`kafka/consumer.py`](kafka/consumer.py), the consumer is designe
 
 ## 9. Analytical KPIs & Empirical Findings
 
-The analytical SQL script [`sql/kpis.sql`](sql/kpis.sql) queries PostgreSQL directly. Below are the production results verified by [`src/run_kpis.py`](src/run_kpis.py):
+The analytical SQL script [`sql/kpis.sql`](sql/kpis.sql) queries PostgreSQL directly. Below are the verified production results:
 
 ### KPI 1: Average Prediction Error (Global & Regional)
 * **Global Predictions:** `782` valid events.
@@ -452,7 +449,7 @@ The project provides the official Power BI dashboard template in the `dashboards
 ## 11. Repository Structure
 
 ```
-workshop_3/
+project/
 ├── data/
 │   ├── raw/                 # Original UN World Happiness CSVs (2015.csv - 2019.csv)
 │   ├── processed/           # Standardized master dataset (happiness_unified.csv)
@@ -460,13 +457,6 @@ workshop_3/
 ├── notebooks/
 │   ├── eda.ipynb            # Fully executed EDA, schema profiling, and null audit
 │   └── model_training.ipynb # Feature engineering, ML pipeline training, and evaluation
-├── src/
-│   ├── harmonization.py     # Schema harmonization module (snake_case conversion)
-│   ├── train_model.py       # Standalone training script and pipeline serialization
-│   ├── run_kpis.py          # PostgreSQL analytical query runner and reporting
-│   ├── generate_dashboard_charts.py # Generates publication-ready figures
-│   ├── create_powerbi_artifacts.py  # Builds .pbit template
-│   └── verify_db.py         # Validates tables, columns, indexes, and FK constraints
 ├── kafka/
 │   ├── producer.py          # Streaming event producer with error injection
 │   └── consumer.py          # Fault-tolerant consumer with real-time scoring
@@ -477,15 +467,10 @@ workshop_3/
 │   └── kpis.sql             # 4 Mandatory analytical SQL KPI queries
 ├── dashboards/
 │   └── Workshop3_Happiness_Dashboard.pbit # Official Power BI Dashboard Template (live PostgreSQL queries)
-├── docs/
-│   ├── pdf_pages/           # 300 DPI high-resolution page renders of workshop PDF
-│   └── full_extracted_pdf.txt # Complete textual extraction of assignment brief
 ├── docker-compose.yml       # Zookeeper, Kafka broker, and PostgreSQL infrastructure
 ├── requirements.txt         # Pinned production Python dependencies
-├── .gitignore               # Clean git exclusions (no pycache, logs, or scratch)
-├── README.md                # Comprehensive technical documentation in English
-├── README_ES.md             # Complete technical documentation in Spanish
-└── GUIA_EXPLICACION_PROYECTO.md # Oral defense preparation guide in Spanish (30% grade)
+├── .gitignore               # Clean git exclusions
+└── README.md                # Comprehensive technical documentation
 ```
 
 ---
@@ -514,16 +499,14 @@ docker compose ps
 ```
 Kafka broker will be listening on `localhost:9092` and PostgreSQL on `localhost:6432`.
 
-### Step 3: Verify PostgreSQL Tables & Star Schema
+### Step 3: Initialize Star Schema Tables
+PostgreSQL automatically executes `sql/create_tables.sql` upon container startup (mapped via `docker-compose.yml`). You can also execute it directly:
 ```bash
-python src/verify_db.py
+docker exec -i workshop3-postgres psql -U postgres -d happiness_db < sql/create_tables.sql
 ```
 
-### Step 4: Execute Data Harmonization & ML Training
-```bash
-python src/harmonization.py
-python src/train_model.py
-```
+### Step 4: Run ETL & ML Notebooks (Offline Phase)
+Open and run `notebooks/eda.ipynb` to harmonize schemas and `notebooks/model_training.ipynb` to train and serialize the model. The serialized model is already saved in `models/model.pkl`.
 
 ### Step 5: Start Real-Time Streaming Pipeline
 Open two separate terminal windows:
@@ -539,9 +522,10 @@ Open two separate terminal windows:
 
 *Observations:* The consumer processes 782 valid events in real time, applies ML scoring, stores records in `fact_predictions`, and catches all 4 malformed events without crashing.
 
-### Step 6: Execute SQL KPIs
+### Step 6: Query Analytical KPIs in PostgreSQL
+Execute the 4 analytical KPI queries defined in `sql/kpis.sql`:
 ```bash
-python src/run_kpis.py
+docker exec -i workshop3-postgres psql -U postgres -d happiness_db < sql/kpis.sql
 ```
 
 ### Step 7: Open Power BI Dashboard

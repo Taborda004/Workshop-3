@@ -19,8 +19,17 @@ desktop.ini
 # Temporary files
 dashboards/current_screen.png
 
-# Power BI binary caches (deliverables use .pbit template and .pbip project files)
+# Power BI binary caches
 *.pbix
 
 # Logs
+*.log
+
+# Local files not part of official submission rubric
+docs/
+src/
+GUIA_EXPLICACION_PROYECTO.md
+README_ES.md
+ETL-G01_2026-2_Workshop-3.pdf
+/*.csv
 *.log
