@@ -171,6 +171,32 @@ Across the 5 observation years (2015–2019), the raw datasets provided by the U
    * Stored in [`data/processed/happiness_unified.csv`](data/processed/happiness_unified.csv): Contains 782 rows and 10 canonical columns:
      `country`, `region`, `actual_happiness_score`, `gdp`, `family`, `health`, `freedom`, `generosity`, `corruption`, `year`.
 
+### 3.3 Descriptive Statistics of Unified Master Dataset
+The exploratory data analysis profiling over the 782 unified historical records yields the following baseline distribution metrics:
+
+| Metric | Happiness Score | GDP per Capita | Social Support | Healthy Life Exp. | Freedom | Generosity | Corruption Perception |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Count** | 782 | 782 | 782 | 782 | 782 | 782 | 782 |
+| **Mean** | `5.3790` | `0.9160` | `1.0784` | `0.6124` | `0.4111` | `0.2186` | `0.1257` |
+| **Std Dev** | `1.1275` | `0.4073` | `0.3295` | `0.2483` | `0.1529` | `0.1223` | `0.1060` |
+| **Min** | `2.6930` | `0.0000` | `0.0000` | `0.0000` | `0.0000` | `0.0000` | `0.0000` |
+| **25% (Q1)** | `4.5098` | `0.6065` | `0.8694` | `0.4402` | `0.3098` | `0.1300` | `0.0542` |
+| **50% (Median)**| `5.3220` | `0.9822` | `1.1247` | `0.6473` | `0.4310` | `0.2020` | `0.0910` |
+| **75% (Q3)** | `6.1895` | `1.2362` | `1.3272` | `0.8080` | `0.5310` | `0.2788` | `0.1562` |
+| **Max** | `7.7690` | `2.0960` | `1.6440` | `1.1410` | `0.7240` | `0.8381` | `0.5519` |
+
+### 3.4 Correlation Analysis with Happiness Score
+Pearson correlation coefficients identify the linear association between independent socio-economic factors and the target variable:
+
+| Independent Feature | Correlation with Happiness ($r$) | Empirical Relationship |
+| :--- | :---: | :--- |
+| **`gdp` (GDP per Capita)** | **`+0.7893`** | Strongest positive driver of national subjective well-being. |
+| **`health` (Healthy Life Expectancy)** | **`+0.7425`** | Strong positive correlation; physical longevity is vital for life satisfaction. |
+| **`family` (Social Support)** | **`+0.6488`** | High positive correlation; institutional and social safety nets prevent distress. |
+| **`freedom` (Choice Autonomy)** | **`+0.5513`** | Moderate positive correlation; civil liberties enhance perceived life quality. |
+| **`corruption` (Government Trust)** | **`+0.4002`** | Moderate correlation; low corruption perception strongly clusters in top nations. |
+| **`generosity` (Altruism)** | **`+0.1376`** | Weak linear correlation; altruism is culturally distributed across all income levels. |
+
 ---
 
 ## 4. Feature Engineering Decisions
@@ -238,6 +264,18 @@ The dataset was split using `train_test_split(test_size=0.30, random_state=42)` 
 | **$R^2$ Score (Coefficient of Det.)** | `0.9510` | **`0.7802`** | The model explains **78.02%** of happiness variance on unseen data. |
 
 The complete pipeline was serialized to [`models/model.pkl`](models/model.pkl) (1.93 MB) and verified for single-event real-time scoring.
+
+### 5.3 Model Feature Importance Breakdown
+The trained Random Forest regressor computes Gini importance across the 6 features:
+
+| Feature | Gini Importance Weight | Relative Impact | Interpretation |
+| :--- | :---: | :---: | :--- |
+| **`gdp` (GDP per Capita)** | **`50.08%`** | Dominant | Primary driver of predictive splits; sets standard of living baseline. |
+| **`health` (Life Expectancy)** | **`22.62%`** | Secondary | Essential contributor; health infrastructure separates high/low happiness. |
+| **`freedom` (Choice Autonomy)** | **`11.88%`** | Moderate | Significant factor in democratic, high-income societies. |
+| **`family` (Social Support)** | **`6.46%`** | Supporting | Modulates baseline distress; highly correlated with GDP. |
+| **`generosity` (Altruism)** | **`4.53%`** | Minor | Small residual influence on overall predictive scoring. |
+| **`corruption` (Government Trust)** | **`4.43%`** | Minor | Highly concentrated in top-ranking institutional states. |
 
 ---
 
