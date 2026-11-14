@@ -69,9 +69,8 @@ table dim_date
 		mode: import
 		source =
 			let
-				Source = PostgreSQL.Database("localhost:6432", "happiness_db"),
-				public_dim_date = Source{[Schema="public",Item="dim_date"]}[Data]
+				Source = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.dim_date"])
 			in
-				public_dim_date
+				Source
 
 	annotation PBI_ResultType = Table

@@ -35,9 +35,8 @@ table dim_country
 		mode: import
 		source =
 			let
-				Source = PostgreSQL.Database("localhost:6432", "happiness_db"),
-				public_dim_country = Source{[Schema="public",Item="dim_country"]}[Data]
+				Source = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.dim_country"])
 			in
-				public_dim_country
+				Source
 
 	annotation PBI_ResultType = Table

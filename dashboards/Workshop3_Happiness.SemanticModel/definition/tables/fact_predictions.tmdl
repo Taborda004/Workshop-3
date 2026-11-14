@@ -149,9 +149,8 @@ table fact_predictions
 		mode: import
 		source =
 			let
-				Source = PostgreSQL.Database("localhost:6432", "happiness_db"),
-				public_fact_predictions = Source{[Schema="public",Item="fact_predictions"]}[Data]
+				Source = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.fact_predictions"])
 			in
-				public_fact_predictions
+				Source
 
 	annotation PBI_ResultType = Table

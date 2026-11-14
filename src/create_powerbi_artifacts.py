@@ -97,10 +97,9 @@ with open(os.path.join(TABLES_DIR, "dim_country.tmdl"), "w", encoding="utf-8") a
 \t\tmode: import
 \t\tsource =
 \t\t\tlet
-\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db"),
-\t\t\t\tpublic_dim_country = Source{[Schema="public",Item="dim_country"]}[Data]
+\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.dim_country"])
 \t\t\tin
-\t\t\t\tpublic_dim_country
+\t\t\t\tSource
 
 \tannotation PBI_ResultType = Table
 ''')
@@ -177,10 +176,9 @@ with open(os.path.join(TABLES_DIR, "dim_date.tmdl"), "w", encoding="utf-8") as f
 \t\tmode: import
 \t\tsource =
 \t\t\tlet
-\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db"),
-\t\t\t\tpublic_dim_date = Source{[Schema="public",Item="dim_date"]}[Data]
+\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.dim_date"])
 \t\t\tin
-\t\t\t\tpublic_dim_date
+\t\t\t\tSource
 
 \tannotation PBI_ResultType = Table
 ''')
@@ -337,10 +335,9 @@ with open(os.path.join(TABLES_DIR, "fact_predictions.tmdl"), "w", encoding="utf-
 \t\tmode: import
 \t\tsource =
 \t\t\tlet
-\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db"),
-\t\t\t\tpublic_fact_predictions = Source{[Schema="public",Item="fact_predictions"]}[Data]
+\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.fact_predictions"])
 \t\t\tin
-\t\t\t\tpublic_fact_predictions
+\t\t\t\tSource
 
 \tannotation PBI_ResultType = Table
 ''')
@@ -412,10 +409,9 @@ with open(os.path.join(TABLES_DIR, "raw_happiness_events.tmdl"), "w", encoding="
 \t\tmode: import
 \t\tsource =
 \t\t\tlet
-\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db"),
-\t\t\t\tpublic_raw_happiness_events = Source{[Schema="public",Item="raw_happiness_events"]}[Data]
+\t\t\t\tSource = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.raw_happiness_events"])
 \t\t\tin
-\t\t\t\tpublic_raw_happiness_events
+\t\t\t\tSource
 
 \tannotation PBI_ResultType = Table
 ''')
@@ -787,10 +783,9 @@ tmsl_model = {
                         "type": "m",
                         "expression": [
                             "let",
-                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),",
-                            "    public_dim_country = Source{[Schema=\"public\",Item=\"dim_country\"]}[Data]",
+                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\", [Query=\"SELECT * FROM public.dim_country\"])",
                             "in",
-                            "    public_dim_country"
+                            "    Source"
                         ]
                     }
                 }]
@@ -815,10 +810,9 @@ tmsl_model = {
                         "type": "m",
                         "expression": [
                             "let",
-                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),",
-                            "    public_dim_date = Source{[Schema=\"public\",Item=\"dim_date\"]}[Data]",
+                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\", [Query=\"SELECT * FROM public.dim_date\"])",
                             "in",
-                            "    public_dim_date"
+                            "    Source"
                         ]
                     }
                 }]
@@ -858,10 +852,9 @@ tmsl_model = {
                         "type": "m",
                         "expression": [
                             "let",
-                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),",
-                            "    public_fact_predictions = Source{[Schema=\"public\",Item=\"fact_predictions\"]}[Data]",
+                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\", [Query=\"SELECT * FROM public.fact_predictions\"])",
                             "in",
-                            "    public_fact_predictions"
+                            "    Source"
                         ]
                     }
                 }]
@@ -886,10 +879,9 @@ tmsl_model = {
                         "type": "m",
                         "expression": [
                             "let",
-                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),",
-                            "    public_raw_happiness_events = Source{[Schema=\"public\",Item=\"raw_happiness_events\"]}[Data]",
+                            "    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\", [Query=\"SELECT * FROM public.raw_happiness_events\"])",
                             "in",
-                            "    public_raw_happiness_events"
+                            "    Source"
                         ]
                     }
                 }]

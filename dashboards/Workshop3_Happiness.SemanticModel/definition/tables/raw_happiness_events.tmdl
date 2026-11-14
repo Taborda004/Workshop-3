@@ -64,9 +64,8 @@ table raw_happiness_events
 		mode: import
 		source =
 			let
-				Source = PostgreSQL.Database("localhost:6432", "happiness_db"),
-				public_raw_happiness_events = Source{[Schema="public",Item="raw_happiness_events"]}[Data]
+				Source = PostgreSQL.Database("localhost:6432", "happiness_db", [Query="SELECT * FROM public.raw_happiness_events"])
 			in
-				public_raw_happiness_events
+				Source
 
 	annotation PBI_ResultType = Table
