@@ -492,7 +492,9 @@ with open(os.path.join(PAGE_DIR, "page.json"), "w", encoding="utf-8") as f:
     }, f, indent=2)
 
 def write_visual(v_name, visual_dict):
-    p = os.path.join(VISUALS_DIR, f"{v_name}.json")
+    v_subdir = os.path.join(VISUALS_DIR, v_name)
+    os.makedirs(v_subdir, exist_ok=True)
+    p = os.path.join(v_subdir, "visual.json")
     with open(p, "w", encoding="utf-8") as out:
         json.dump(visual_dict, out, indent=2)
 
@@ -1013,17 +1015,24 @@ print(f"Copied to Desktop: {desktop_pbit}")
 desktop_bat = os.path.join(DESKTOP_DIR, "ABRIR_DASHBOARD_POWER_BI.bat")
 with open(desktop_bat, "w", encoding="utf-8") as f:
     f.write(r'''@echo off
+chcp 65001 >nul
 echo ========================================================
-echo Abriendo Dashboard de Power BI - Workshop 3...
+echo   WORKSHOP 3 - STREAMING ETL & ML (POWER BI DASHBOARD)
+echo   Autor: Mauricio Taborda
 echo ========================================================
-set PBIT_PATH=%~dp0Workshop3_Happiness_Dashboard.pbit
-set PBI_EXE=C:\Program Files\WindowsApps\Microsoft.MicrosoftPowerBIDesktop_2.159.1231.0_x64__8wekyb3d8bbwe\bin\pbidesktop.exe
+echo.
+echo [1/2] Verificando contenedores de base de datos...
+docker start happiness_postgres happiness_zookeeper happiness_kafka >nul 2>&1
 
-if exist "%PBI_EXE%" (
-    start "" "%PBI_EXE%" "%PBIT_PATH%"
-) else (
-    start "" "%PBIT_PATH%"
-)
-echo Dashboard lanzado exitosamente.
+echo [2/2] Abriendo Dashboard en Power BI Desktop...
+set PBIT_PATH=%~dp0Workshop3_Happiness_Dashboard.pbit
+explorer.exe "%PBIT_PATH%"
+
+echo.
+echo ========================================================
+echo   Dashboard lanzado. En Power BI haz clic en:
+echo   'Actualizar' o 'Actualizar ahora' para refrescar datos.
+echo ========================================================
+timeout /t 5
 ''')
 print(f"Launcher copied to Desktop: {desktop_bat}")
