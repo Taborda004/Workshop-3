@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "donut_audit_resilience",
   "position": {
-    "x": 970,
+    "x": 975,
     "y": 640,
     "z": 301,
-    "height": 410,
-    "width": 480,
+    "height": 425,
+    "width": 450,
     "tabOrder": 301
   },
   "visual": {
@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "raw_happiness_events.processing_status",
-              "nativeQueryRef": "processing_status",
+              "nativeQueryRef": "Estado Ingesta",
               "active": true
             }
           ]
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "CountNonNull(raw_happiness_events.raw_event_id)",
-              "nativeQueryRef": "Count of raw_event_id"
+              "nativeQueryRef": "Total Eventos Kafka"
             }
           ]
         }

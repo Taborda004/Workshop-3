@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "chart_kpi1_regional_metrics",
   "position": {
     "x": 20,
-    "y": 220,
+    "y": 205,
     "z": 200,
-    "height": 400,
-    "width": 930,
+    "height": 420,
+    "width": 925,
     "tabOrder": 200
   },
   "visual": {
@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "dim_country.region",
-              "nativeQueryRef": "region",
+              "nativeQueryRef": "Regi\u00f3n Geogr\u00e1fica",
               "active": true
             }
           ]
@@ -46,7 +46,7 @@
                 }
               },
               "queryRef": "fact_predictions.MAE",
-              "nativeQueryRef": "MAE"
+              "nativeQueryRef": "MAE (Error Absoluto Medio)"
             },
             {
               "field": {
@@ -60,7 +60,7 @@
                 }
               },
               "queryRef": "fact_predictions.RMSE",
-              "nativeQueryRef": "RMSE"
+              "nativeQueryRef": "RMSE (Ra\u00edz Error Cuadr\u00e1tico)"
             }
           ]
         }

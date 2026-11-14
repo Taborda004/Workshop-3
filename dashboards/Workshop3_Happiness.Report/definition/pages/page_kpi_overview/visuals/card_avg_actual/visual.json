@@ -1,19 +1,19 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "card_prediction_bias",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "card_avg_actual",
   "position": {
-    "x": 1620,
+    "x": 968,
     "y": 80,
-    "z": 105,
-    "height": 120,
-    "width": 280,
-    "tabOrder": 105
+    "z": 103,
+    "height": 110,
+    "width": 300,
+    "tabOrder": 103
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Data": {
+        "Fields": {
           "projections": [
             {
               "field": {
@@ -23,11 +23,11 @@
                       "Entity": "fact_predictions"
                     }
                   },
-                  "Property": "Prediction Bias"
+                  "Property": "Avg Actual Score"
                 }
               },
-              "queryRef": "fact_predictions.Prediction Bias",
-              "nativeQueryRef": "Prediction Bias"
+              "queryRef": "fact_predictions.Avg Actual Score",
+              "nativeQueryRef": "Puntaje Real Medio"
             }
           ]
         }

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "header_title",
+  "position": {
+    "x": 20,
+    "y": 15,
+    "z": 50,
+    "height": 55,
+    "width": 1880,
+    "tabOrder": 50
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "WORKSHOP 3: STREAMING ETL & MACHINE LEARNING ANALYTICS",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "17pt",
+                      "color": "#38BDF8",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "   |   World Happiness Prediction  \u2022  Apache Kafka + Scikit-Learn + PostgreSQL Star Schema  \u2022  Autor: Mauricio Taborda",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt",
+                      "color": "#94A3B8"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

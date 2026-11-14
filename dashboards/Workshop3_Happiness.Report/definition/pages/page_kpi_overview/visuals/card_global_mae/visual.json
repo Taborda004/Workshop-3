@@ -1,19 +1,19 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "card_global_rmse",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "card_global_mae",
   "position": {
-    "x": 660,
+    "x": 336,
     "y": 80,
-    "z": 102,
-    "height": 120,
+    "z": 101,
+    "height": 110,
     "width": 300,
-    "tabOrder": 102
+    "tabOrder": 101
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Data": {
+        "Fields": {
           "projections": [
             {
               "field": {
@@ -23,11 +23,11 @@
                       "Entity": "fact_predictions"
                     }
                   },
-                  "Property": "RMSE"
+                  "Property": "MAE"
                 }
               },
-              "queryRef": "fact_predictions.RMSE",
-              "nativeQueryRef": "RMSE"
+              "queryRef": "fact_predictions.MAE",
+              "nativeQueryRef": "MAE Global"
             }
           ]
         }

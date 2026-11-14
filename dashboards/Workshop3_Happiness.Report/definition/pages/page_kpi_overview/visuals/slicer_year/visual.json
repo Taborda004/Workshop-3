@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "slicer_region",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "slicer_year",
   "position": {
-    "x": 1470,
+    "x": 1695,
     "y": 640,
-    "z": 302,
-    "height": 410,
-    "width": 220,
-    "tabOrder": 302
+    "z": 303,
+    "height": 425,
+    "width": 205,
+    "tabOrder": 303
   },
   "visual": {
     "visualType": "slicer",
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dim_country"
+                      "Entity": "dim_date"
                     }
                   },
-                  "Property": "region"
+                  "Property": "year"
                 }
               },
-              "queryRef": "dim_country.region",
-              "nativeQueryRef": "region",
+              "queryRef": "dim_date.year",
+              "nativeQueryRef": "Filtro A\u00f1o",
               "active": true
             }
           ]

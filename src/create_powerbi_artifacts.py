@@ -498,138 +498,73 @@ def write_visual(v_name, visual_dict):
     with open(p, "w", encoding="utf-8") as out:
         json.dump(visual_dict, out, indent=2)
 
-# Cards
-write_visual("card_total_predictions", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_total_predictions",
-    "position": {"x": 20, "y": 80, "z": 100, "height": 120, "width": 300, "tabOrder": 100},
+SCHEMA_VIS = "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+
+# Header Title Banner
+write_visual("header_title", {
+    "$schema": SCHEMA_VIS,
+    "name": "header_title",
+    "position": {"x": 20, "y": 15, "z": 50, "height": 55, "width": 1880, "tabOrder": 50},
     "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Total Predictions"}},
-                        "queryRef": "fact_predictions.Total Predictions",
-                        "nativeQueryRef": "Total Predictions"
+        "visualType": "textbox",
+        "objects": {
+            "general": [{
+                "properties": {
+                    "paragraphs": [{
+                        "textRuns": [
+                            {
+                                "value": "WORKSHOP 3: STREAMING ETL & MACHINE LEARNING ANALYTICS",
+                                "textStyle": {"fontFamily": "Segoe UI Semibold", "fontSize": "17pt", "color": "#38BDF8", "fontWeight": "bold"}
+                            },
+                            {
+                                "value": "   |   World Happiness Prediction  •  Apache Kafka + Scikit-Learn + PostgreSQL Star Schema  •  Autor: Mauricio Taborda",
+                                "textStyle": {"fontFamily": "Segoe UI", "fontSize": "11pt", "color": "#94A3B8"}
+                            }
+                        ]
                     }]
                 }
-            }
-        },
-        "drillFilterOtherVisuals": True
+            }]
+        }
     }
 })
 
-write_visual("card_global_mae", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_global_mae",
-    "position": {"x": 340, "y": 80, "z": 101, "height": 120, "width": 300, "tabOrder": 101},
-    "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "MAE"}},
-                        "queryRef": "fact_predictions.MAE",
-                        "nativeQueryRef": "MAE"
-                    }]
-                }
-            }
-        },
-        "drillFilterOtherVisuals": True
-    }
-})
+# Row 1: 6 KPI Cards (classic high-compatibility 'card' visual)
+cards_meta = [
+    ("card_total_predictions", 20, 100, "Total Predictions", "fact_predictions.Total Predictions", "Total Predicciones"),
+    ("card_global_mae", 336, 101, "MAE", "fact_predictions.MAE", "MAE Global"),
+    ("card_global_rmse", 652, 102, "RMSE", "fact_predictions.RMSE", "RMSE Global"),
+    ("card_avg_actual", 968, 103, "Avg Actual Score", "fact_predictions.Avg Actual Score", "Puntaje Real Medio"),
+    ("card_avg_predicted", 1284, 104, "Avg Predicted Score", "fact_predictions.Avg Predicted Score", "Puntaje Predicho Medio"),
+    ("card_prediction_bias", 1600, 105, "Prediction Bias", "fact_predictions.Prediction Bias", "Sesgo Predicción (Bias)")
+]
 
-write_visual("card_global_rmse", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_global_rmse",
-    "position": {"x": 660, "y": 80, "z": 102, "height": 120, "width": 300, "tabOrder": 102},
-    "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "RMSE"}},
-                        "queryRef": "fact_predictions.RMSE",
-                        "nativeQueryRef": "RMSE"
-                    }]
+for c_name, c_x, c_z, prop, qref, label in cards_meta:
+    write_visual(c_name, {
+        "$schema": SCHEMA_VIS,
+        "name": c_name,
+        "position": {"x": c_x, "y": 80, "z": c_z, "height": 110, "width": 300, "tabOrder": c_z},
+        "visual": {
+            "visualType": "card",
+            "query": {
+                "queryState": {
+                    "Fields": {
+                        "projections": [{
+                            "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": prop}},
+                            "queryRef": qref,
+                            "nativeQueryRef": label
+                        }]
+                    }
                 }
-            }
-        },
-        "drillFilterOtherVisuals": True
-    }
-})
+            },
+            "drillFilterOtherVisuals": True
+        }
+    })
 
-write_visual("card_avg_actual", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_avg_actual",
-    "position": {"x": 980, "y": 80, "z": 103, "height": 120, "width": 300, "tabOrder": 103},
-    "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Avg Actual Score"}},
-                        "queryRef": "fact_predictions.Avg Actual Score",
-                        "nativeQueryRef": "Avg Actual Score"
-                    }]
-                }
-            }
-        },
-        "drillFilterOtherVisuals": True
-    }
-})
-
-write_visual("card_avg_predicted", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_avg_predicted",
-    "position": {"x": 1300, "y": 80, "z": 104, "height": 120, "width": 300, "tabOrder": 104},
-    "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Avg Predicted Score"}},
-                        "queryRef": "fact_predictions.Avg Predicted Score",
-                        "nativeQueryRef": "Avg Predicted Score"
-                    }]
-                }
-            }
-        },
-        "drillFilterOtherVisuals": True
-    }
-})
-
-write_visual("card_prediction_bias", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-    "name": "card_prediction_bias",
-    "position": {"x": 1620, "y": 80, "z": 105, "height": 120, "width": 280, "tabOrder": 105},
-    "visual": {
-        "visualType": "cardVisual",
-        "query": {
-            "queryState": {
-                "Data": {
-                    "projections": [{
-                        "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Prediction Bias"}},
-                        "queryRef": "fact_predictions.Prediction Bias",
-                        "nativeQueryRef": "Prediction Bias"
-                    }]
-                }
-            }
-        },
-        "drillFilterOtherVisuals": True
-    }
-})
-
-# KPI 1 Clustered Column
+# Row 2: KPI 1 Clustered Column Chart (x=20, y=205, w=925, h=420)
 write_visual("chart_kpi1_regional_metrics", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "chart_kpi1_regional_metrics",
-    "position": {"x": 20, "y": 220, "z": 200, "height": 400, "width": 930, "tabOrder": 200},
+    "position": {"x": 20, "y": 205, "z": 200, "height": 420, "width": 925, "tabOrder": 200},
     "visual": {
         "visualType": "clusteredColumnChart",
         "query": {
@@ -638,7 +573,7 @@ write_visual("chart_kpi1_regional_metrics", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "region"}},
                         "queryRef": "dim_country.region",
-                        "nativeQueryRef": "region",
+                        "nativeQueryRef": "Región Geográfica",
                         "active": True
                     }]
                 },
@@ -647,12 +582,12 @@ write_visual("chart_kpi1_regional_metrics", {
                         {
                             "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "MAE"}},
                             "queryRef": "fact_predictions.MAE",
-                            "nativeQueryRef": "MAE"
+                            "nativeQueryRef": "MAE (Error Absoluto Medio)"
                         },
                         {
                             "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "RMSE"}},
                             "queryRef": "fact_predictions.RMSE",
-                            "nativeQueryRef": "RMSE"
+                            "nativeQueryRef": "RMSE (Raíz Error Cuadrático)"
                         }
                     ]
                 }
@@ -666,11 +601,11 @@ write_visual("chart_kpi1_regional_metrics", {
     }
 })
 
-# KPI 4 Line Chart
+# Row 2: KPI 4 Line Chart (x=975, y=205, w=925, h=420)
 write_visual("chart_kpi4_temporal_evolution", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "chart_kpi4_temporal_evolution",
-    "position": {"x": 970, "y": 220, "z": 201, "height": 400, "width": 930, "tabOrder": 201},
+    "position": {"x": 975, "y": 205, "z": 201, "height": 420, "width": 925, "tabOrder": 201},
     "visual": {
         "visualType": "lineChart",
         "query": {
@@ -679,7 +614,7 @@ write_visual("chart_kpi4_temporal_evolution", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_date"}}, "Property": "year"}},
                         "queryRef": "dim_date.year",
-                        "nativeQueryRef": "year",
+                        "nativeQueryRef": "Año del Evento",
                         "active": True
                     }]
                 },
@@ -688,12 +623,12 @@ write_visual("chart_kpi4_temporal_evolution", {
                         {
                             "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Avg Actual Score"}},
                             "queryRef": "fact_predictions.Avg Actual Score",
-                            "nativeQueryRef": "Avg Actual Score"
+                            "nativeQueryRef": "Puntaje Real Promedio"
                         },
                         {
                             "field": {"Measure": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "Avg Predicted Score"}},
                             "queryRef": "fact_predictions.Avg Predicted Score",
-                            "nativeQueryRef": "Avg Predicted Score"
+                            "nativeQueryRef": "Puntaje Predicho Promedio"
                         }
                     ]
                 }
@@ -703,22 +638,22 @@ write_visual("chart_kpi4_temporal_evolution", {
     }
 })
 
-# KPI 2 Table
+# Row 3: KPI 2 Country Residuals Table (x=20, y=640, w=925, h=425)
 write_visual("table_kpi2_country_residuals", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "table_kpi2_country_residuals",
-    "position": {"x": 20, "y": 640, "z": 300, "height": 410, "width": 930, "tabOrder": 300},
+    "position": {"x": 20, "y": 640, "z": 300, "height": 425, "width": 925, "tabOrder": 300},
     "visual": {
         "visualType": "tableEx",
         "query": {
             "queryState": {
                 "Values": {
                     "projections": [
-                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "country_name"}}, "queryRef": "dim_country.country_name", "nativeQueryRef": "country_name"},
-                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "region"}}, "queryRef": "dim_country.region", "nativeQueryRef": "region"},
-                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "actual_score"}}, "queryRef": "fact_predictions.actual_score", "nativeQueryRef": "actual_score"},
-                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "predicted_score"}}, "queryRef": "fact_predictions.predicted_score", "nativeQueryRef": "predicted_score"},
-                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "prediction_error"}}, "queryRef": "fact_predictions.prediction_error", "nativeQueryRef": "prediction_error"}
+                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "country_name"}}, "queryRef": "dim_country.country_name", "nativeQueryRef": "País"},
+                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "region"}}, "queryRef": "dim_country.region", "nativeQueryRef": "Región"},
+                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "actual_score"}}, "queryRef": "fact_predictions.actual_score", "nativeQueryRef": "Puntaje Real"},
+                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "predicted_score"}}, "queryRef": "fact_predictions.predicted_score", "nativeQueryRef": "Puntaje Predicho"},
+                        {"field": {"Column": {"Expression": {"SourceRef": {"Entity": "fact_predictions"}}, "Property": "prediction_error"}}, "queryRef": "fact_predictions.prediction_error", "nativeQueryRef": "Error Residuo"}
                     ]
                 }
             }
@@ -727,11 +662,11 @@ write_visual("table_kpi2_country_residuals", {
     }
 })
 
-# Audit Donut
+# Row 3: Audit & Resilience Donut (x=975, y=640, w=450, h=425)
 write_visual("donut_audit_resilience", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "donut_audit_resilience",
-    "position": {"x": 970, "y": 640, "z": 301, "height": 410, "width": 480, "tabOrder": 301},
+    "position": {"x": 975, "y": 640, "z": 301, "height": 425, "width": 450, "tabOrder": 301},
     "visual": {
         "visualType": "donutChart",
         "query": {
@@ -740,7 +675,7 @@ write_visual("donut_audit_resilience", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "raw_happiness_events"}}, "Property": "processing_status"}},
                         "queryRef": "raw_happiness_events.processing_status",
-                        "nativeQueryRef": "processing_status",
+                        "nativeQueryRef": "Estado Ingesta",
                         "active": True
                     }]
                 },
@@ -748,7 +683,7 @@ write_visual("donut_audit_resilience", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "raw_happiness_events"}}, "Property": "raw_event_id"}},
                         "queryRef": "CountNonNull(raw_happiness_events.raw_event_id)",
-                        "nativeQueryRef": "Count of raw_event_id"
+                        "nativeQueryRef": "Total Eventos Kafka"
                     }]
                 }
             }
@@ -757,11 +692,11 @@ write_visual("donut_audit_resilience", {
     }
 })
 
-# Slicers
+# Row 3: Slicers (x=1445 and x=1695, y=640, h=425)
 write_visual("slicer_region", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "slicer_region",
-    "position": {"x": 1470, "y": 640, "z": 302, "height": 410, "width": 220, "tabOrder": 302},
+    "position": {"x": 1445, "y": 640, "z": 302, "height": 425, "width": 230, "tabOrder": 302},
     "visual": {
         "visualType": "slicer",
         "query": {
@@ -770,7 +705,7 @@ write_visual("slicer_region", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_country"}}, "Property": "region"}},
                         "queryRef": "dim_country.region",
-                        "nativeQueryRef": "region",
+                        "nativeQueryRef": "Filtro Región",
                         "active": True
                     }]
                 }
@@ -781,9 +716,9 @@ write_visual("slicer_region", {
 })
 
 write_visual("slicer_year", {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+    "$schema": SCHEMA_VIS,
     "name": "slicer_year",
-    "position": {"x": 1710, "y": 640, "z": 303, "height": 410, "width": 190, "tabOrder": 303},
+    "position": {"x": 1695, "y": 640, "z": 303, "height": 425, "width": 205, "tabOrder": 303},
     "visual": {
         "visualType": "slicer",
         "query": {
@@ -792,7 +727,7 @@ write_visual("slicer_year", {
                     "projections": [{
                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": "dim_date"}}, "Property": "year"}},
                         "queryRef": "dim_date.year",
-                        "nativeQueryRef": "year",
+                        "nativeQueryRef": "Filtro Año",
                         "active": True
                     }]
                 }
