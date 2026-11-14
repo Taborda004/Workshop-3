@@ -586,15 +586,15 @@ Open two separate terminal windows in the workspace root:
 
 * **Terminal 1 — Start the Kafka Consumer:**
   ```bash
-  python kafka/consumer.py --timeout-ms 20000
+  python kafka/consumer.py
   ```
   *The consumer connects to PostgreSQL, loads `models/model.pkl`, and begins listening on topic `happiness-events` under consumer group `happiness-ml-team`.*
 
 * **Terminal 2 — Start the Kafka Producer:**
   ```bash
-  python kafka/producer.py --delay 0.005
+  python kafka/producer.py
   ```
-  *The producer reads `happiness_stream_source.csv`, serializes 782 events + 4 anomaly test cases into JSON, and streams them with partition keys.*
+  *The producer reads `happiness_stream_source.csv`, serializes 782 events + 4 anomaly test cases into JSON, and streams them with partition keys (optional `--delay 0.005` flag supported).*
 
 ### Step 6: Verify Database Ingestion & Execute KPIs
 Run the analytical SQL queries defined in `sql/kpis.sql`:
