@@ -435,11 +435,9 @@ The analytical SQL script [`sql/kpis.sql`](sql/kpis.sql) queries PostgreSQL dire
 
 ## 10. Power BI Desktop Dashboard Integration
 
-The project includes pre-built Power BI artifacts in the `dashboards/` directory:
+The project provides the official Power BI dashboard template in the `dashboards/` directory:
 
-1. **Pre-built Template:** [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)
-2. **Modern Power BI Project:** [`dashboards/Workshop3_Happiness.pbip`](dashboards/Workshop3_Happiness.pbip)
-3. **1-Click Windows Launcher:** [`dashboards/ABRIR_DASHBOARD_POWER_BI.bat`](dashboards/ABRIR_DASHBOARD_POWER_BI.bat)
+* **Official Power BI Dashboard Template:** [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)
 
 ### Visual Dashboard Layout:
 * **Metric Cards (Top Header):** `Total Predictions` (782), `Global MAE` (0.2405), `Global RMSE` (0.3441), `Avg Actual Score` (5.38), `Avg Predicted Score` (5.37), and `Prediction Bias` (-0.008).
@@ -467,7 +465,7 @@ workshop_3/
 │   ├── train_model.py       # Standalone training script and pipeline serialization
 │   ├── run_kpis.py          # PostgreSQL analytical query runner and reporting
 │   ├── generate_dashboard_charts.py # Generates publication-ready figures
-│   ├── create_powerbi_artifacts.py  # Builds .pbit template and .pbip project
+│   ├── create_powerbi_artifacts.py  # Builds .pbit template
 │   └── verify_db.py         # Validates tables, columns, indexes, and FK constraints
 ├── kafka/
 │   ├── producer.py          # Streaming event producer with error injection
@@ -478,17 +476,7 @@ workshop_3/
 │   ├── create_tables.sql    # DDL script for PostgreSQL Star Schema
 │   └── kpis.sql             # 4 Mandatory analytical SQL KPI queries
 ├── dashboards/
-│   ├── Workshop3_Happiness_Dashboard.pbit # Complete Power BI Template
-│   ├── Workshop3_Happiness.pbip          # Power BI Project definition
-│   ├── ABRIR_DASHBOARD_POWER_BI.bat      # 1-Click launcher for Power BI
-│   ├── ABRIR_DASHBOARD_POWER_BI.ps1      # PowerShell launcher script
-│   ├── POWER_BI_GUIDE.md                 # Complete manual for Power BI
-│   ├── happiness_analytics.pbids         # Power BI Data Source connector
-│   ├── power_bi_dax_measures.dax         # DAX formulas for model metrics
-│   ├── power_bi_queries.m                # Power Query M extraction queries
-│   ├── dashboard.html                    # Interactive standalone web dashboard
-│   ├── kpis_report.md                    # Analytical findings documentation
-│   └── *.png, *.csv                      # High-resolution figures and metric exports
+│   └── Workshop3_Happiness_Dashboard.pbit # Official Power BI Dashboard Template (live PostgreSQL queries)
 ├── docs/
 │   ├── pdf_pages/           # 300 DPI high-resolution page renders of workshop PDF
 │   └── full_extracted_pdf.txt # Complete textual extraction of assignment brief
@@ -557,7 +545,7 @@ python src/run_kpis.py
 ```
 
 ### Step 7: Open Power BI Dashboard
-Double-click [`dashboards/ABRIR_DASHBOARD_POWER_BI.bat`](dashboards/ABRIR_DASHBOARD_POWER_BI.bat) or open [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit) in Power BI Desktop. Confirm database credentials (`postgres` / `postgres` on `localhost:6432`) and click **Load**.
+Open [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit) in Power BI Desktop. Confirm database credentials (`postgres` / `postgres` on `localhost:6432`) and click **Load**.
 
 ---
 

@@ -1,7 +1,0 @@
-relationship AutoDetected_fact_predictions_country_id_dim_country
-	fromColumn: fact_predictions.country_id
-	toColumn: dim_country.country_id
-
-relationship AutoDetected_fact_predictions_date_id_dim_date
-	fromColumn: fact_predictions.date_id
-	toColumn: dim_date.date_id

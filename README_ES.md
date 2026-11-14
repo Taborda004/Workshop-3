@@ -420,11 +420,9 @@ Ejecutados directamente sobre PostgreSQL mediante [`sql/kpis.sql`](sql/kpis.sql)
 
 ## 10. Integración con Dashboard de Power BI Desktop
 
-El repositorio incluye la solución lista para abrir en `dashboards/`:
+El repositorio incluye la plantilla oficial del dashboard en `dashboards/`:
 
-1. **Plantilla Preconstruida:** [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)
-2. **Proyecto PBIP:** [`dashboards/Workshop3_Happiness.pbip`](dashboards/Workshop3_Happiness.pbip)
-3. **Lanzador Directo de Windows:** [`dashboards/ABRIR_DASHBOARD_POWER_BI.bat`](dashboards/ABRIR_DASHBOARD_POWER_BI.bat)
+* **Plantilla Oficial de Power BI:** [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)
 
 ### Elementos Visuales del Dashboard:
 * **Tarjetas de Métricas (Cabecera):** Total Predicciones (782), MAE Global (0.2405), RMSE Global (0.3441), Score Real Promedio (5.38), Score Predicho Promedio (5.37) y Sesgo (-0.008).
@@ -452,7 +450,7 @@ workshop_3/
 │   ├── train_model.py       # Script de entrenamiento y serialización del pipeline
 │   ├── run_kpis.py          # Ejecutor de las consultas SQL analíticas y reportes
 │   ├── generate_dashboard_charts.py # Generador de figuras de alta resolución
-│   ├── create_powerbi_artifacts.py  # Constructor de plantilla .pbit y proyecto .pbip
+│   ├── create_powerbi_artifacts.py  # Constructor de plantilla .pbit
 │   └── verify_db.py         # Verificador de tablas, columnas e integridad referencial
 ├── kafka/
 │   ├── producer.py          # Productor de streaming con inyección de errores
@@ -463,17 +461,7 @@ workshop_3/
 │   ├── create_tables.sql    # DDL del esquema en estrella en PostgreSQL
 │   └── kpis.sql             # 4 Consultas analíticas SQL oficiales
 ├── dashboards/
-│   ├── Workshop3_Happiness_Dashboard.pbit # Plantilla completa de Power BI
-│   ├── Workshop3_Happiness.pbip          # Proyecto nativo PBIP
-│   ├── ABRIR_DASHBOARD_POWER_BI.bat      # Lanzador de 1 clic en Windows
-│   ├── ABRIR_DASHBOARD_POWER_BI.ps1      # Script PowerShell de apertura
-│   ├── POWER_BI_GUIDE.md                 # Manual detallado de Power BI
-│   ├── happiness_analytics.pbids         # Archivo de conexión rápida a PostgreSQL
-│   ├── power_bi_dax_measures.dax         # Fórmulas DAX del modelo
-│   ├── power_bi_queries.m                # Consultas Power Query M
-│   ├── dashboard.html                    # Dashboard web interactivo complementario
-│   ├── kpis_report.md                    # Reporte analítico detallado
-│   └── *.png, *.csv                      # Figuras exportadas y tablas de métricas
+│   └── Workshop3_Happiness_Dashboard.pbit # Plantilla oficial de Power BI (consultas PostgreSQL en vivo)
 ├── docs/
 │   ├── pdf_pages/           # Renders a 300 DPI de cada página del PDF oficial
 │   └── full_extracted_pdf.txt # Texto íntegro extraído de la guía del taller
@@ -540,7 +528,7 @@ python src/run_kpis.py
 ```
 
 ### Paso 7: Abrir Dashboard en Power BI Desktop
-Haz doble clic en [`dashboards/ABRIR_DASHBOARD_POWER_BI.bat`](dashboards/ABRIR_DASHBOARD_POWER_BI.bat) o abre [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit) en Power BI Desktop. Confirma usuario `postgres` y contraseña `postgres` en `localhost:6432` y haz clic en **Cargar**.
+Abre [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit) en Power BI Desktop. Confirma usuario `postgres` y contraseña `postgres` en `localhost:6432` y haz clic en **Cargar**.
 
 ---
 
