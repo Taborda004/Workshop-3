@@ -533,16 +533,3 @@ Open [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happ
 
 ---
 
-## 13. Oral Defense Preparation (Key Questions & Answers)
-
-> **Q1: Why use 3 partitions in Kafka and why use `country` as the message key?**  
-> **Answer:** Partitions are Kafka's unit of horizontal scalability. With 3 partitions, up to 3 consumer instances in group `happiness-ml-team` can consume in parallel. Using `country` as the key ensures that Murmur2 hashing directs all events for a given country to the exact same partition, preserving strict chronological ordering while evenly balancing workload across the cluster.
-
-> **Q2: What constitutes Target Leakage in this project and why were `Happiness Rank` and `Dystopia Residual` dropped?**  
-> **Answer:** Target leakage occurs when training features contain information derived from the target variable that will not be available during real-time inference. `Happiness Rank` is computed by ordering the target; in streaming, rank cannot be known before evaluating all incoming records. `Dystopia Residual` is defined as $Score - \sum(\text{Factors})$; retaining it reduces regression to an artificial mathematical sum rather than learning true socio-economic patterns.
-
-> **Q3: Why does the consumer insert raw messages into PostgreSQL before validation and inference?**  
-> **Answer:** This implements the *Landing / Staging* engineering pattern. Persisting the raw payload first guarantees complete auditability, immutability, and fault tolerance: even if a message is malformed or causes a parser failure, the original transaction is recorded. Furthermore, it enables *replayability*—if a newer model is deployed, historical raw events can be re-scored without re-streaming from Kafka.
-
-> **Q4: Why connect Power BI to PostgreSQL rather than reading raw CSV files?**  
-> **Answer:** In production streaming architectures, data arrives dynamically and must be queried from the analytical database to reflect real-time inferences and schema constraints. Connecting to PostgreSQL leverages relational indexes, foreign key referential integrity, and live updates, whereas reading CSVs represents a disconnected, static batch process.
