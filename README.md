@@ -26,7 +26,6 @@
 10. [Power BI Desktop Dashboard Integration](#10-power-bi-desktop-dashboard-integration)
 11. [Repository Structure](#11-repository-structure)
 12. [Step-by-Step Execution Guide](#12-step-by-step-execution-guide)
-13. [Oral Defense Preparation (Key Questions & Answers)](#13-oral-defense-preparation-key-questions--answers)
 
 ---
 
