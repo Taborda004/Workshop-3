@@ -176,7 +176,7 @@ def run_consumer(
     consumer_group=DEFAULT_CONSUMER_GROUP,
     db_config=DEFAULT_DB_CONFIG,
     max_messages=None,
-    timeout_ms=10000,
+    timeout_ms=60000,
     auto_offset_reset='earliest'
 ):
     print(f"\n========================================================")
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     parser.add_argument('--bootstrap', default=DEFAULT_BOOTSTRAP, help='Kafka bootstrap servers')
     parser.add_argument('--group', default=DEFAULT_CONSUMER_GROUP, help='Consumer group id')
     parser.add_argument('--max-messages', type=int, default=None, help='Stop after N messages')
-    parser.add_argument('--timeout-ms', type=int, default=10000, help='Polling timeout in ms')
+    parser.add_argument('--timeout-ms', type=int, default=60000, help='Polling timeout in ms')
     args = parser.parse_args()
 
     run_consumer(
