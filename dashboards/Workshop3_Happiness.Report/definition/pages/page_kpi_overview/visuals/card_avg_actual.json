@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "card_avg_actual",
+  "position": {
+    "x": 980,
+    "y": 80,
+    "z": 103,
+    "height": 120,
+    "width": 300,
+    "tabOrder": 103
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "Avg Actual Score"
+                }
+              },
+              "queryRef": "fact_predictions.Avg Actual Score",
+              "nativeQueryRef": "Avg Actual Score"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

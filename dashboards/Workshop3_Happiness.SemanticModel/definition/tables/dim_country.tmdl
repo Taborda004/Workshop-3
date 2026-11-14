@@ -1,0 +1,43 @@
+table dim_country
+	lineageTag: 5f9e2e6c-38d5-4519-86bb-bcf979f45e21
+
+	column country_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c2f4955b-4395-46aa-b2b9-e457fbc4e749
+		summarizeBy: none
+		sourceColumn: country_id
+		annotation SummarizationSetBy = Automatic
+
+	column country_name
+		dataType: string
+		lineageTag: a03e05a5-c3c7-4340-a3ce-b1efb2326ce8
+		summarizeBy: none
+		sourceColumn: country_name
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 72a27521-4f16-4fba-bb5c-15a0c30a8c27
+		summarizeBy: none
+		sourceColumn: region
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 72a27521-4f16-4fba-bb5c-15a0c30a8c28
+		summarizeBy: none
+		sourceColumn: created_at
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_country = m
+		mode: import
+		source =
+			let
+				Source = PostgreSQL.Database("localhost:6432", "happiness_db"),
+				public_dim_country = Source{[Schema="public",Item="dim_country"]}[Data]
+			in
+				public_dim_country
+
+	annotation PBI_ResultType = Table

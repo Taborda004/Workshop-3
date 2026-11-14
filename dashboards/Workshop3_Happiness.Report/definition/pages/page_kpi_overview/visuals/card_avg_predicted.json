@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "card_avg_predicted",
+  "position": {
+    "x": 1300,
+    "y": 80,
+    "z": 104,
+    "height": 120,
+    "width": 300,
+    "tabOrder": 104
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "Avg Predicted Score"
+                }
+              },
+              "queryRef": "fact_predictions.Avg Predicted Score",
+              "nativeQueryRef": "Avg Predicted Score"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

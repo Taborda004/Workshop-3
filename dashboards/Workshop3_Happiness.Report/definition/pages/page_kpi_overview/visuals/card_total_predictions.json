@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "card_total_predictions",
+  "position": {
+    "x": 20,
+    "y": 80,
+    "z": 100,
+    "height": 120,
+    "width": 300,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "Total Predictions"
+                }
+              },
+              "queryRef": "fact_predictions.Total Predictions",
+              "nativeQueryRef": "Total Predictions"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

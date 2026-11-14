@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "card_prediction_bias",
+  "position": {
+    "x": 1620,
+    "y": 80,
+    "z": 105,
+    "height": 120,
+    "width": 280,
+    "tabOrder": 105
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "Prediction Bias"
+                }
+              },
+              "queryRef": "fact_predictions.Prediction Bias",
+              "nativeQueryRef": "Prediction Bias"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

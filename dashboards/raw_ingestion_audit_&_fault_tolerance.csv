@@ -1,0 +1,4 @@
+processing_status,total_events,percentage
+VALID,782,99.49
+INVALID_SCHEMA,2,0.25
+INVALID_VALUES,2,0.25

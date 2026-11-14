@@ -1,0 +1,49 @@
+ 
+6 
+ 
+Recommended environment: 
+ 
+Docker Compose 
+ 
+Kafka Architecture 
+Producer 
+↓ 
+Kafka Topic 
+↓ 
+Consumer 
+ 
+ 
+Step 5 — Kafka Producer 
+Implement a producer that reads the prepared historical data record by record and 
+publishes each record as a simulated streaming event. 
+ 
+Requirements: 
+ 
+Stream records one by one 
+ 
+Serialize events as JSON 
+ 
+Send events to a Kafka topic using country as the event key 
+ 
+Simulate event arrival over time (for example, a short conﬁgurable delay 
+between records) 
+ 
+Use a topic with 3 partitions and replication factor 1 for the local single-broker 
+environment 
+ 
+Required topic name: happiness-events 
+ 
+Required JSON format: 
+{ 
+"event_id": "E001", 
+"country": "Colombia", 
+"year": 2019, 
+"gdp": 1.2, 
+"family": 0.8, 
+"health": 0.9, 
+"freedom": 0.6, 
+"generosity": 0.3, 
+"corruption": 0.1, 
+"actual_happiness_score": 6.2, 
+"event_time": "2026-10-30T15:30:00" 
+} 

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "table_kpi2_country_residuals",
+  "position": {
+    "x": 20,
+    "y": 640,
+    "z": 300,
+    "height": 410,
+    "width": 930,
+    "tabOrder": 300
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_country"
+                    }
+                  },
+                  "Property": "country_name"
+                }
+              },
+              "queryRef": "dim_country.country_name",
+              "nativeQueryRef": "country_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_country"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "dim_country.region",
+              "nativeQueryRef": "region"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "actual_score"
+                }
+              },
+              "queryRef": "fact_predictions.actual_score",
+              "nativeQueryRef": "actual_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "predicted_score"
+                }
+              },
+              "queryRef": "fact_predictions.predicted_score",
+              "nativeQueryRef": "predicted_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_predictions"
+                    }
+                  },
+                  "Property": "prediction_error"
+                }
+              },
+              "queryRef": "fact_predictions.prediction_error",
+              "nativeQueryRef": "prediction_error"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,16 @@
+country_name,region,total_predictions,avg_actual_score,avg_predicted_score,country_mae
+Somalia,Sub-Saharan Africa,6,5.059,4.764,0.307
+Australia,Australia and New Zealand,5,7.276,7.273,0.054
+Uruguay,Latin America and Caribbean,5,6.431,6.374,0.057
+Canada,North America,5,7.351,7.287,0.064
+Congo (Kinshasa),Sub-Saharan Africa,5,4.346,4.288,0.065
+Spain,Western Europe,5,6.351,6.279,0.072
+Turkey,Middle East and Northern Africa,5,5.415,5.481,0.072
+Macedonia,Central and Eastern Europe,5,5.152,5.205,0.074
+Jamaica,Latin America and Caribbean,5,5.662,5.614,0.074
+Poland,Central and Eastern Europe,5,5.981,6.058,0.077
+Kuwait,Middle East and Northern Africa,5,6.149,6.228,0.079
+Montenegro,Central and Eastern Europe,5,5.292,5.217,0.086
+Lebanon,Middle East and Northern Africa,5,5.15,5.177,0.086
+South Korea,Eastern Asia,5,5.885,5.913,0.088
+Palestinian Territories,Middle East and Northern Africa,5,4.737,4.796,0.088

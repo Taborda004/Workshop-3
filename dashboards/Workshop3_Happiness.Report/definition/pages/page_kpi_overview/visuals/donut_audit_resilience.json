@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "donut_audit_resilience",
+  "position": {
+    "x": 970,
+    "y": 640,
+    "z": 301,
+    "height": 410,
+    "width": 480,
+    "tabOrder": 301
+  },
+  "visual": {
+    "visualType": "donutChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "raw_happiness_events"
+                    }
+                  },
+                  "Property": "processing_status"
+                }
+              },
+              "queryRef": "raw_happiness_events.processing_status",
+              "nativeQueryRef": "processing_status",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "raw_happiness_events"
+                    }
+                  },
+                  "Property": "raw_event_id"
+                }
+              },
+              "queryRef": "CountNonNull(raw_happiness_events.raw_event_id)",
+              "nativeQueryRef": "Count of raw_event_id"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

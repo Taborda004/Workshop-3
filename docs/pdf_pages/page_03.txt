@@ -1,0 +1,60 @@
+ 
+3 
+ 
+ 
+ 
+5. Dataset Description 
+ 
+You are provided with multiple CSV files containing World Happiness data from different 
+years. 
+ 
+Files: 
+ 
+2015.csv 
+ 
+2016.csv 
+ 
+2017.csv 
+ 
+2018.csv 
+ 
+2019.csv 
+ 
+The datasets contain: 
+ 
+Happiness score 
+ 
+GDP 
+ 
+Health indicators 
+ 
+Family/social support 
+ 
+Freedom indicators 
+ 
+Corruption perception 
+ 
+Generosity 
+ 
+Country information 
+ 
+Important: 
+The datasets do NOT share exactly the same schema. You must analyze and harmonize the 
+datasets before integrating them. 
+Streaming simulation note: the CSV ﬁles are bounded historical sources. In Part B, the 
+producer will read records one by one and publish them as events to simulate data 
+arriving over time. 
+ 
+6. Activities 
+ 
+PART A — Data Profiling and Machine Learning 
+Objective: Build a batch ETL pipeline capable of preparing data for machine learning. 
+ 
+Step 1 — Exploratory Data Analysis (EDA) 
+Perform EDA on all datasets. 
+ 
+You must analyze: 
+ 
+Missing values 
+ 
+Duplicated records 

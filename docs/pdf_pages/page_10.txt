@@ -1,0 +1,50 @@
+ 
+10 
+ 
+The dashboard must query the database, NOT CSV files. 
+ 
+7. Technical Requirements 
+ 
+ 
+Python 
+ 
+Apache Kafka 
+ 
+Pandas 
+ 
+Scikit-learn 
+ 
+SQL database 
+ 
+8. Recommended Folder Structure 
+ 
+project/ 
+│ 
+├── data/ 
+│ ├── raw/ 
+│ ├── processed/ 
+│ └── streaming/ 
+│ 
+├── notebooks/ 
+│ ├── eda.ipynb 
+│ └── model_training.ipynb 
+│ 
+├── kafka/ 
+│ ├── producer.py 
+│ └── consumer.py 
+│ 
+├── models/ 
+│ └── model.pkl 
+│ 
+├── sql/ 
+│ ├── create_tables.sql 
+│ └── kpis.sql 
+│ 
+├── dashboards/ 
+│ 
+├── docker-compose.yml 
+│ 
+├── requirements.txt 
+│ 
+└── README.md 
+ 

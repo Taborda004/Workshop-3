@@ -1,0 +1,52 @@
+ 
+7 
+ 
+Event Contract (minimum requirements) 
+Before implementing the consumer, deﬁne the contract expected by downstream 
+processing. At minimum: 
+ 
+event_id: non-empty string; unique identiﬁer for traceability. 
+ 
+country: non-empty string; also used as the Kafka event key. 
+ 
+year: integer corresponding to the historical observation. 
+ 
+gdp, family, health, freedom, generosity, corruption: numeric values compatible 
+with the uniﬁed training schema. 
+ 
+actual_happiness_score: numeric value used only for evaluation; it must NOT 
+be used as a model input feature. 
+ 
+event_time: valid ISO-8601 timestamp representing when the producer emitted 
+the simulated event. 
+Important: Kafka transports the record, but the application is responsible for 
+interpreting and validating the business ﬁelds. 
+ 
+Step 6 — Kafka Consumer 
+Implement a consumer that performs real-time inference. 
+ 
+The consumer must: 
+ 
+Use consumer group: happiness-ml-team 
+1. Receive streaming events 
+2. Store the raw incoming event in a database table before applying any transformation 
+or prediction. 
+3. Validate the incoming event against the deﬁned event contract 
+4. Apply the same feature ordering and preprocessing used during model training 
+5. Load the serialized model 
+6. Generate predictions 
+7. Store prediction results in a database 
+ 
+Raw Event Storage Requirement 
+Before validation or prediction, the consumer must load the original Kafka message 
+into a raw table. Suggested table: raw_happiness_events 
+ 
+The raw table preserves the original incoming event exactly as it arrived from Kafka. This 
+supports traceability, auditing, debugging, and future reprocessing if transformation or 
+prediction rules change. 
+Invalid records should also be stored in the raw table, but they must be marked with an 
+appropriate processing status, such as: 
+ 
+VALID 
+ 
+INVALID_SCHEMA 
