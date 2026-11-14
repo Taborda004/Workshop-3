@@ -19,5 +19,8 @@ desktop.ini
 # Temporary files
 dashboards/current_screen.png
 
+# Power BI binary caches (deliverables use .pbit template and .pbip project files)
+*.pbix
+
 # Logs
 *.log
