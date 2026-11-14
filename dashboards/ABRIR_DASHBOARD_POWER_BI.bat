@@ -1,14 +1,35 @@
 @echo off
+chcp 65001 >nul
 echo ========================================================
-echo Abriendo Dashboard de Power BI - Workshop 3...
+echo   WORKSHOP 3 - STREAMING ETL & ML (POWER BI DASHBOARD)
+echo   Autor: Mauricio Taborda
 echo ========================================================
+echo.
+echo [1/3] Verificando contenedores de base de datos y Kafka...
+docker start happiness_postgres happiness_zookeeper happiness_kafka >nul 2>&1
+
+echo [2/3] Verificando conectividad con PostgreSQL en localhost:6432...
+timeout /t 2 /nobreak >nul
+
 set PBIT_PATH=%~dp0Workshop3_Happiness_Dashboard.pbit
-set PBIP_PATH=%~dp0Workshop3_Happiness.pbip
 set PBI_EXE=C:\Program Files\WindowsApps\Microsoft.MicrosoftPowerBIDesktop_2.159.1231.0_x64__8wekyb3d8bbwe\bin\pbidesktop.exe
 
+echo [3/3] Abriendo Dashboard en Power BI Desktop...
 if exist "%PBI_EXE%" (
     start "" "%PBI_EXE%" "%PBIT_PATH%"
 ) else (
     start "" "%PBIT_PATH%"
 )
-echo Dashboard lanzado exitosamente en Power BI Desktop.
+
+echo.
+echo ========================================================
+echo   ¡Dashboard lanzado exitosamente!
+echo   * Servidor: localhost:6432
+echo   * Base de datos: happiness_db
+echo   * Usuario: postgres
+echo   * Contraseña: postgres
+echo.
+echo   (Si Power BI te solicita credenciales, selecciona
+echo    'Base de datos' e ingresa: postgres / postgres)
+echo ========================================================
+timeout /t 5

@@ -1,0 +1,811 @@
+{
+  "name": "f7f42ad4-e6a3-47d6-acac-2aa16e36c1d8",
+  "compatibilityLevel": 1606,
+  "createdTimestamp": "2026-11-13T22:20:10.046667-05:00",
+  "lastUpdate": "2026-11-13T22:20:28.663333-05:00",
+  "lastSchemaUpdate": "2026-11-13T22:20:14.733333-05:00",
+  "lastProcessed": "2026-11-13T22:20:28.483333-05:00",
+  "model": {
+    "culture": "en-US",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "modifiedTime": "2026-11-14T03:20:10.59",
+    "structureModifiedTime": "2026-11-14T03:20:10.606667",
+    "tables": [
+      {
+        "name": "dim_country",
+        "lineageTag": "5f9e2e6c-38d5-4519-86bb-bcf979f45e21",
+        "modifiedTime": "2026-11-14T03:20:10.596667",
+        "structureModifiedTime": "2026-11-14T03:20:10.596667",
+        "columns": [
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isKey": true,
+            "isNullable": false,
+            "modifiedTime": "2026-11-14T03:20:10.613333",
+            "structureModifiedTime": "2026-11-14T03:20:10.603333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "country_id",
+            "dataType": "int64",
+            "sourceColumn": "country_id",
+            "formatString": "0",
+            "lineageTag": "9f9f1cd0-6296-4399-bee6-64aaeade35af",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "country_name",
+            "dataType": "string",
+            "sourceColumn": "country_name",
+            "lineageTag": "8b44a589-9ee6-4fd9-bba7-b08b743bfa26",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "region",
+            "dataType": "string",
+            "sourceColumn": "region",
+            "lineageTag": "93226f9a-3c8f-4638-ba2e-5e7f2e891a38",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "created_at",
+            "dataType": "dateTime",
+            "sourceColumn": "created_at",
+            "formatString": "General Date",
+            "lineageTag": "7ecdfaa8-570f-4d8b-ad2b-d10ab94a812a",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_country",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-11-14T03:20:28.48",
+            "refreshedTime": "2026-11-14T03:20:28.48",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),\n    public_dim_country = Source{[Schema=\"public\",Item=\"dim_country\"]}[Data]\nin\n    public_dim_country"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_date",
+        "lineageTag": "6c28fce8-0e31-41fb-9e8c-8be9e5f3aa41",
+        "modifiedTime": "2026-11-14T03:20:10.606667",
+        "structureModifiedTime": "2026-11-14T03:20:10.606667",
+        "columns": [
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isKey": true,
+            "isNullable": false,
+            "modifiedTime": "2026-11-14T03:20:10.613333",
+            "structureModifiedTime": "2026-11-14T03:20:10.606667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "date_id",
+            "dataType": "int64",
+            "sourceColumn": "date_id",
+            "formatString": "0",
+            "lineageTag": "e5f8e041-b20e-40d2-bc70-3f77490d0ae9",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "sourceColumn": "year",
+            "formatString": "0",
+            "lineageTag": "fcc33cfa-e6d9-4fb5-9f78-983d1c4ae016",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "event_time",
+            "dataType": "dateTime",
+            "sourceColumn": "event_time",
+            "formatString": "General Date",
+            "lineageTag": "f433ef98-6d41-4ece-a739-5dd50ba36798",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "month",
+            "dataType": "int64",
+            "sourceColumn": "month",
+            "formatString": "0",
+            "lineageTag": "6b7f3409-aa88-468d-9bbc-445a8778841e",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "day",
+            "dataType": "int64",
+            "sourceColumn": "day",
+            "formatString": "0",
+            "lineageTag": "f9f982b8-b70c-4235-8545-f25022310ccc",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "hour",
+            "dataType": "int64",
+            "sourceColumn": "hour",
+            "formatString": "0",
+            "lineageTag": "12d95b27-aa77-4185-bb99-5beef55672fa",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "minute",
+            "dataType": "int64",
+            "sourceColumn": "minute",
+            "formatString": "0",
+            "lineageTag": "fd84038b-5ceb-453b-9c3d-f02469118468",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "created_at",
+            "dataType": "dateTime",
+            "sourceColumn": "created_at",
+            "formatString": "General Date",
+            "lineageTag": "13a2e906-0d56-4f16-ae62-253d5ea7f4b7",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_date",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-11-14T03:20:28.48",
+            "refreshedTime": "2026-11-14T03:20:28.48",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),\n    public_dim_date = Source{[Schema=\"public\",Item=\"dim_date\"]}[Data]\nin\n    public_dim_date"
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_predictions",
+        "lineageTag": "b38e92d7-b89e-4c74-a63e-7f61c6bfe76b",
+        "modifiedTime": "2026-11-14T03:20:10.606667",
+        "structureModifiedTime": "2026-11-14T03:20:10.606667",
+        "columns": [
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isKey": true,
+            "isNullable": false,
+            "modifiedTime": "2026-11-14T03:20:10.613333",
+            "structureModifiedTime": "2026-11-14T03:20:10.606667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "prediction_id",
+            "dataType": "int64",
+            "sourceColumn": "prediction_id",
+            "formatString": "0",
+            "lineageTag": "0f11cc0d-d841-405f-bc05-ffad639ca443",
+            "summarizeBy": "count",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "raw_event_id",
+            "dataType": "int64",
+            "sourceColumn": "raw_event_id",
+            "formatString": "0",
+            "lineageTag": "c7d83ac6-ecfe-4c2a-8d42-0c5258a69533",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "country_id",
+            "dataType": "int64",
+            "sourceColumn": "country_id",
+            "formatString": "0",
+            "lineageTag": "1cb64b9f-1773-442f-bb2a-fe8a5fb2098d",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "date_id",
+            "dataType": "int64",
+            "sourceColumn": "date_id",
+            "formatString": "0",
+            "lineageTag": "3b1139d7-4acf-4341-9040-c23dd5046c44",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "gdp",
+            "dataType": "double",
+            "sourceColumn": "gdp",
+            "formatString": "0.0000",
+            "lineageTag": "e69a2074-3353-4315-99c6-784ea2c12522",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "family",
+            "dataType": "double",
+            "sourceColumn": "family",
+            "formatString": "0.0000",
+            "lineageTag": "f10002fc-707b-4def-a198-48de729f17b5",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "health",
+            "dataType": "double",
+            "sourceColumn": "health",
+            "formatString": "0.0000",
+            "lineageTag": "87806188-ffc0-44ed-94cb-7c9503187c3e",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "freedom",
+            "dataType": "double",
+            "sourceColumn": "freedom",
+            "formatString": "0.0000",
+            "lineageTag": "d0615dde-cd23-4b30-93e8-546aee44775b",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "generosity",
+            "dataType": "double",
+            "sourceColumn": "generosity",
+            "formatString": "0.0000",
+            "lineageTag": "149dafd4-b4d8-49d9-9061-2cb0fcb2b853",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "corruption",
+            "dataType": "double",
+            "sourceColumn": "corruption",
+            "formatString": "0.0000",
+            "lineageTag": "98f269ab-0b4b-4f6f-a027-d7e384e952c1",
+            "summarizeBy": "sum",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "actual_score",
+            "dataType": "double",
+            "sourceColumn": "actual_score",
+            "formatString": "0.000",
+            "lineageTag": "49610912-5cc6-48da-af62-f7eb755f4ab4",
+            "summarizeBy": "average",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "predicted_score",
+            "dataType": "double",
+            "sourceColumn": "predicted_score",
+            "formatString": "0.000",
+            "lineageTag": "28f3cdce-2dbe-4578-ba84-2194e7591b77",
+            "summarizeBy": "average",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "prediction_error",
+            "dataType": "double",
+            "sourceColumn": "prediction_error",
+            "formatString": "0.0000",
+            "lineageTag": "0f4fb80d-2117-4662-867b-4516907efc34",
+            "summarizeBy": "average",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "event_time",
+            "dataType": "dateTime",
+            "sourceColumn": "event_time",
+            "formatString": "General Date",
+            "lineageTag": "8f197468-a5a7-49bb-8de0-01fefec9eea1",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "prediction_timestamp",
+            "dataType": "dateTime",
+            "sourceColumn": "prediction_timestamp",
+            "formatString": "General Date",
+            "lineageTag": "3f02755d-7bbd-4f67-99c9-fbe5b7f2b6f1",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_predictions",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-11-14T03:20:28.48",
+            "refreshedTime": "2026-11-14T03:20:28.48",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),\n    public_fact_predictions = Source{[Schema=\"public\",Item=\"fact_predictions\"]}[Data]\nin\n    public_fact_predictions"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Predictions",
+            "expression": "COUNTROWS(fact_predictions)",
+            "formatString": "#,0",
+            "lineageTag": "f77e19a4-45e0-456b-94c4-b4dccf15f3ae",
+            "dataType": "int64",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          },
+          {
+            "name": "MAE",
+            "expression": "SUMX(fact_predictions, ABS(fact_predictions[prediction_error])) / COUNTROWS(fact_predictions)",
+            "formatString": "0.0000",
+            "lineageTag": "f5ba96af-e9c3-4d13-bcd9-4c1944de1bbb",
+            "dataType": "double",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          },
+          {
+            "name": "RMSE",
+            "expression": "SQRT(SUMX(fact_predictions, fact_predictions[prediction_error] * fact_predictions[prediction_error]) / COUNTROWS(fact_predictions))",
+            "formatString": "0.0000",
+            "lineageTag": "bf24eb49-c27e-4ed4-9282-7860974cb617",
+            "dataType": "double",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          },
+          {
+            "name": "Avg Actual Score",
+            "expression": "AVERAGE(fact_predictions[actual_score])",
+            "formatString": "0.000",
+            "lineageTag": "6204d704-cfa7-4919-ac4b-0973004ae57a",
+            "dataType": "double",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          },
+          {
+            "name": "Avg Predicted Score",
+            "expression": "AVERAGE(fact_predictions[predicted_score])",
+            "formatString": "0.000",
+            "lineageTag": "d15c1f7b-09ab-4788-88fd-37e18dba1634",
+            "dataType": "double",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          },
+          {
+            "name": "Prediction Bias",
+            "expression": "[Avg Predicted Score] - [Avg Actual Score]",
+            "formatString": "+0.0000;-0.0000;0.0000",
+            "lineageTag": "128cf032-5326-4a2a-8ffa-d9ce7066eff6",
+            "dataType": "double",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61"
+          }
+        ]
+      },
+      {
+        "name": "raw_happiness_events",
+        "lineageTag": "c48e92d7-b89e-4c74-a63e-7f61c6bfe76c",
+        "modifiedTime": "2026-11-14T03:20:10.606667",
+        "structureModifiedTime": "2026-11-14T03:20:10.606667",
+        "columns": [
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isKey": true,
+            "isNullable": false,
+            "modifiedTime": "2026-11-14T03:20:10.613333",
+            "structureModifiedTime": "2026-11-14T03:20:10.606667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "raw_event_id",
+            "dataType": "int64",
+            "sourceColumn": "raw_event_id",
+            "formatString": "0",
+            "lineageTag": "5c9bcf6c-5f5d-4409-85cf-3ebca9c04c19",
+            "summarizeBy": "count",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "event_id",
+            "dataType": "string",
+            "sourceColumn": "event_id",
+            "lineageTag": "cc113c98-0ed7-4084-aa6b-8b56121ef411",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "country",
+            "dataType": "string",
+            "sourceColumn": "country",
+            "lineageTag": "a24464b1-ff8c-4922-9edd-8f93e64a3d19",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "sourceColumn": "year",
+            "formatString": "0",
+            "lineageTag": "03f36014-d273-45f7-b540-bfd172526560",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.61",
+              "refreshedTime": "2026-11-14T03:20:28.61"
+            }
+          },
+          {
+            "name": "raw_payload",
+            "dataType": "string",
+            "sourceColumn": "raw_payload",
+            "lineageTag": "02451a8a-4356-4038-891b-34cd4f820698",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.633333",
+              "refreshedTime": "2026-11-14T03:20:28.633333"
+            }
+          },
+          {
+            "name": "processing_status",
+            "dataType": "string",
+            "sourceColumn": "processing_status",
+            "lineageTag": "d78ed21d-c57d-4f66-b24a-eb2d5e13486d",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "error_message",
+            "dataType": "string",
+            "sourceColumn": "error_message",
+            "lineageTag": "9dad3df6-d86c-428e-945c-b4f0ab767528",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          },
+          {
+            "name": "ingestion_timestamp",
+            "dataType": "dateTime",
+            "sourceColumn": "ingestion_timestamp",
+            "formatString": "General Date",
+            "lineageTag": "ec91edea-5a6b-4f3f-88b6-790a1a5ed8ea",
+            "summarizeBy": "none",
+            "modifiedTime": "2026-11-14T03:20:14.893333",
+            "structureModifiedTime": "2026-11-14T03:20:10.61",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-11-14T03:20:28.613333",
+              "refreshedTime": "2026-11-14T03:20:28.613333"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "raw_happiness_events",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-11-14T03:20:28.483333",
+            "refreshedTime": "2026-11-14T03:20:28.483333",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = PostgreSQL.Database(\"localhost:6432\", \"happiness_db\"),\n    public_raw_happiness_events = Source{[Schema=\"public\",Item=\"raw_happiness_events\"]}[Data]\nin\n    public_raw_happiness_events"
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "rel_fact_country",
+        "fromTable": "fact_predictions",
+        "fromColumn": "country_id",
+        "toTable": "dim_country",
+        "toColumn": "country_id",
+        "state": "ready",
+        "modifiedTime": "2026-11-14T03:20:28.62",
+        "refreshedTime": "2026-11-14T03:20:28.62"
+      },
+      {
+        "name": "rel_fact_date",
+        "fromTable": "fact_predictions",
+        "fromColumn": "date_id",
+        "toTable": "dim_date",
+        "toColumn": "date_id",
+        "state": "ready",
+        "modifiedTime": "2026-11-14T03:20:28.62",
+        "refreshedTime": "2026-11-14T03:20:28.62"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"dim_country\",\"dim_date\",\"fact_predictions\",\"raw_happiness_events\"]",
+        "modifiedTime": "2026-11-14T03:20:24.226667"
+      }
+    ]
+  }
+}
