@@ -1,9 +1,14 @@
 # Workshop-3: Streaming ETL with Apache Kafka and Machine Learning
+
 **Course:** ETL (G01) — Faculty of Engineering and Basic Sciences  
 **Academic Program:** Data Engineering and Artificial Intelligence  
-**Author:** Mauricio Taborda (Taborda004)  
+**Author:** Mauricio Taborda (`Taborda004`)  
+**Professor:** Ing. Breyner Posso Bautista  
 **Academic Period:** 2026-2  
-**Evaluation Target:** 100% Rubric Compliance (5.0 / 5.0)
+**Evaluation Target:** 100% Rubric Compliance (5.0 / 5.0)  
+
+> [!NOTE]
+> **Technical Architecture & Live Demonstration Guide:** This documentation serves as the complete technical manual and executive presentation for the streaming ETL pipeline. It covers the offline ML preparation, real-time event ingestion with Apache Kafka, fault-tolerant consumer logic with contract validation, PostgreSQL star schema design, and live analytical reporting in Power BI Desktop querying PostgreSQL directly without CSV dependencies.
 
 
 ---
@@ -219,35 +224,34 @@ The infrastructure is provisioned through [`docker-compose.yml`](docker-compose.
 version: '3.8'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    container_name: workshop3-zookeeper
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: happiness_zookeeper
     ports: ["2181:2181"]
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    container_name: workshop3-kafka
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: happiness_kafka
     depends_on: [zookeeper]
     ports: ["9092:9092"]
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_NUM_PARTITIONS: 3
 
   postgres:
     image: postgres:16-alpine
-    container_name: workshop3-postgres
-    ports: ["6432:5432"] # Host port 6432 mapped to avoid Windows NAT socket exclusions
+    container_name: happiness_postgres
+    ports: ["6432:5432"] # Host port 6432 mapped for Windows compatibility
     environment:
       POSTGRES_DB: happiness_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
 ```
 
 ### Topic Topology:
@@ -502,7 +506,7 @@ Kafka broker will be listening on `localhost:9092` and PostgreSQL on `localhost:
 ### Step 3: Initialize Star Schema Tables
 PostgreSQL automatically executes `sql/create_tables.sql` upon container startup (mapped via `docker-compose.yml`). You can also execute it directly:
 ```bash
-docker exec -i workshop3-postgres psql -U postgres -d happiness_db < sql/create_tables.sql
+docker exec -i happiness_postgres psql -U postgres -d happiness_db < sql/create_tables.sql
 ```
 
 ### Step 4: Run ETL & ML Notebooks (Offline Phase)
@@ -513,7 +517,7 @@ Open two separate terminal windows:
 
 * **Terminal 1 (Start Consumer):**
   ```bash
-  python kafka/consumer.py --timeout-ms 25000
+  python kafka/consumer.py --timeout-ms 20000
   ```
 * **Terminal 2 (Start Producer):**
   ```bash
@@ -525,7 +529,7 @@ Open two separate terminal windows:
 ### Step 6: Query Analytical KPIs in PostgreSQL
 Execute the 4 analytical KPI queries defined in `sql/kpis.sql`:
 ```bash
-docker exec -i workshop3-postgres psql -U postgres -d happiness_db < sql/kpis.sql
+docker exec -i happiness_postgres psql -U postgres -d happiness_db < sql/kpis.sql
 ```
 
 ### Step 7: Open Power BI Dashboard
