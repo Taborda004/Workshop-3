@@ -4,75 +4,43 @@
 **Academic Program:** Data Engineering and Artificial Intelligence  
 **Author:** Mauricio Taborda (`Taborda004`)  
 **Professor:** Ing. Breyner Posso Bautista  
+**Institution:** Universidad Autónoma de Occidente (UAO)  
 **Academic Period:** 2026-2  
-**Evaluation Target:** 100% Rubric Compliance (5.0 / 5.0)  
-
-> [!NOTE]
-> **Technical Architecture & Defense Documentation:** This document serves as the comprehensive technical manual and presentation deck for the Workshop-3 project. It details the complete pipeline: offline exploratory data analysis, schema harmonization, leakage-free machine learning, real-time event streaming with Apache Kafka, resilient consumer validation, dimensional star schema modeling in PostgreSQL, and live analytical reporting in Power BI Desktop querying PostgreSQL directly without CSV dependencies.
-
----
-
-## Evaluation Rubric Compliance Matrix
-
-This project adheres strictly to the 9 technical evaluation criteria defined in Section 10 of the official workshop assignment (`ETL-G01_2026-2_Workshop-3.pdf`):
-
-| # | Evaluation Criterion | Weight | Implementation Details | Verified Artifacts |
-| :-: | :--- | :-: | :--- | :--- |
-| **1** | **Data Integration & Cleaning** | 1.0 / 5.0 | Resolved severe 5-year schema drift across 2015–2019. Standardized column nomenclature to canonical `snake_case`. Backfilled 100% missing geopolitical regions using invariant country mapping. Imputed UAE 2018 corruption null value ($0.3400$) using longitudinal median. Output: 782 clean, unified records. | [`data/processed/happiness_unified.csv`](data/processed/happiness_unified.csv)<br>[`notebooks/eda.ipynb`](notebooks/eda.ipynb) |
-| **2** | **Feature Engineering** | 0.5 / 5.0 | Selected 6 independent macro-indicators. Strictly prevented target leakage by eliminating `Happiness Rank`, confidence intervals (`Whisker.high/low`), and `Dystopia Residual`. Standardized feature distributions inside an encapsulated transformation pipeline. | [`notebooks/model_training.ipynb`](notebooks/model_training.ipynb)<br>Section 4 of this README |
-| **3** | **ML Pipeline** | 0.5 / 5.0 | Built an end-to-end `scikit-learn` Pipeline (`SimpleImputer` $\rightarrow$ `StandardScaler` $\rightarrow$ `RandomForestRegressor`). Evaluated under 70/30 train/test split ($R^2 = 0.7802$, $\text{MAE} = 0.4077$). Serialized complete preprocessing and scoring pipeline to disk. | [`models/model.pkl`](models/model.pkl)<br>[`notebooks/model_training.ipynb`](notebooks/model_training.ipynb) |
-| **4** | **Kafka Producer** | 0.5 / 5.0 | Streams events record-by-record from bounded source with configurable delay. Emits strict JSON payloads matching official schema. Partitions events across 3 partitions using `country` as message key (Murmur2 hash). Injects 4 controlled anomaly events to demonstrate resilience. | [`kafka/producer.py`](kafka/producer.py)<br>[`data/streaming/happiness_stream_source.csv`](data/streaming/happiness_stream_source.csv) |
-| **5** | **Kafka Consumer** | 0.5 / 5.0 | Operates under consumer group `happiness-ml-team`. Reads streaming events from `happiness-events` topic, performs real-time feature extraction matching model order, executes sub-second inference using `model.pkl`, and writes to database. | [`kafka/consumer.py`](kafka/consumer.py) |
-| **6** | **Event Contract & Validation** | 0.5 / 5.0 | Strictly validates required keys, types, and numeric ranges. Lands every raw event into `raw_happiness_events` *before* transformation. Catches malformed events, tags them with error statuses (`INVALID_SCHEMA`, `INVALID_VALUES`), and continues running without pipeline interruption. | Section 6 & 8 of this README<br>[`kafka/consumer.py`](kafka/consumer.py) |
-| **7** | **Database Design & Loading** | 0.5 / 5.0 | Designed Kimball star schema in PostgreSQL: `raw_happiness_events` (staging/audit), `dim_country` (conformed geographic dimension), `dim_date` (conformed temporal dimension), and `fact_predictions` (central fact table linked via `raw_event_id` for 1:1 auditability). | [`sql/create_tables.sql`](sql/create_tables.sql)<br>Docker: `happiness_postgres:6432` |
-| **8** | **Dashboard & KPIs** | 0.5 / 5.0 | Designed Power BI dashboard connected directly to PostgreSQL via native SQL queries (zero CSV dependencies). Implemented all 4 mandatory KPIs: Average Prediction Error, Predictions by Country, Predicted vs. Actual Score, and Temporal Trends. | [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)<br>[`sql/kpis.sql`](sql/kpis.sql) |
-| **9** | **Documentation & Reproducibility** | 0.5 / 5.0 | Pinned dependencies in `requirements.txt`, fully automated multi-container deployment in `docker-compose.yml`, exact 19-file repository structure matching Section 8, and comprehensive technical documentation. | [`docker-compose.yml`](docker-compose.yml)<br>[`requirements.txt`](requirements.txt)<br>[`README.md`](README.md) |
 
 ---
 
 ## Table of Contents
-1. [Executive Summary & Engineering Objectives](#1-executive-summary--engineering-objectives)
-2. [End-to-End System Architecture](#2-end-to-end-system-architecture)
-3. [Exploratory Data Analysis (EDA) & Data Cleaning Decisions](#3-exploratory-data-analysis-eda--data-cleaning-decisions)
-4. [Feature Engineering & Leakage Prevention Decisions](#4-feature-engineering--leakage-prevention-decisions)
-5. [Machine Learning Pipeline & Serialization](#5-machine-learning-pipeline--serialization)
-6. [Kafka Architecture, Topic Topology & JSON Event Contract](#6-kafka-architecture-topic-topology--json-event-contract)
-7. [PostgreSQL Star Schema & Dimensional Modeling](#7-postgresql-star-schema--dimensional-modeling)
-8. [Real-Time Streaming Consumer & Fault-Tolerant Logic](#8-real-time-streaming-consumer--fault-tolerant-logic)
-9. [Analytical KPIs & Empirical Findings](#9-analytical-kpis--empirical-findings)
-10. [Power BI Desktop Dashboard Integration](#10-power-bi-desktop-dashboard-integration)
-11. [Repository Structure (Strict Rubric Alignment)](#11-repository-structure-strict-rubric-alignment)
-12. [Step-by-Step Execution Guide](#12-step-by-step-execution-guide)
+1. [Project Description](#1-project-description)
+2. [Architecture Explanation](#2-architecture-explanation)
+3. [Data Cleaning Decisions](#3-data-cleaning-decisions)
+4. [Feature Engineering Decisions](#4-feature-engineering-decisions)
+5. [Machine Learning Pipeline & Model Serialization](#5-machine-learning-pipeline--model-serialization)
+6. [Kafka Pipeline & Event Contract Explanation](#6-kafka-pipeline--event-contract-explanation)
+7. [Database Schema & Dimensional Modeling](#7-database-schema--dimensional-modeling)
+8. [Real-Time Consumer & Fault-Tolerant Processing](#8-real-time-consumer--fault-tolerant-processing)
+9. [Analytical KPIs & Findings](#9-analytical-kpis--findings)
+10. [Dashboard Explanation](#10-dashboard-explanation)
+11. [Repository Structure](#11-repository-structure)
+12. [Execution Instructions](#12-execution-instructions)
 
 ---
 
-## 1. Executive Summary & Engineering Objectives
+## 1. Project Description
 
-Modern enterprise data architectures demand a transition from high-latency, overnight batch ETL jobs to **event-driven streaming pipelines capable of real-time machine learning inference**. 
+This project implements an end-to-end, event-driven **Streaming ETL pipeline with real-time Machine Learning scoring and dimensional analytics**. Traditional data architectures rely on batch ETL workflows that introduce significant latency between data generation and business consumption. This project demonstrates how modern data engineering bridges this gap by combining distributed message streaming with real-time inference and analytical storage.
 
-This workshop designs, implements, and validates a complete streaming ETL solution. The pipeline takes raw historical observations from the United Nations World Happiness Report (2015–2019), harmonizes their schemas offline, trains an encapsulated regression model, and deploys a live Apache Kafka streaming infrastructure. 
-
-```
-                                  WORKSHOP-3 CORE PIPELINE
-  ┌──────────────────────┐      ┌──────────────────────┐      ┌──────────────────────┐
-  │   OFFLINE BATCH      │      │  EVENT STREAMING     │      │ ANALYTICAL WAREHOUSE │
-  │  EDA & ML Pipeline   │ ───► │  Kafka Broker +      │ ───► │ PostgreSQL Star +    │
-  │  (Scikit-Learn .pkl) │      │  Real-Time Inference │      │ Power BI Dashboard   │
-  └──────────────────────┘      └──────────────────────┘      └──────────────────────┘
-```
-
-### Core Engineering Deliverables:
-1. **Schema Harmonization:** Resolve structural schema drift, column renaming, and regional metadata omissions across 5 years of historical survey data.
-2. **Reproducible ML Pipeline:** Encapsulate feature imputation, standardization, and regression scoring in a self-contained `scikit-learn` Pipeline saved as `models/model.pkl`.
-3. **Partitioned Event Streaming:** Simulate real-time arrival of survey records via an Apache Kafka producer partitioned by country key.
-4. **Resilient Streaming Inference:** Implement a Kafka consumer that audits every raw message into PostgreSQL before performing contract validation and real-time inference, ensuring non-blocking execution upon encountering malformed payloads.
-5. **Dimensional Analytics:** Expose a normalized Star Schema in PostgreSQL to Power BI Desktop, calculating the 4 required KPIs through direct SQL queries without reading CSV files.
+### Core Objectives:
+* **Heterogeneous Data Harmonization:** Integrate 5 distinct annual survey datasets (2015–2019) from the United Nations World Happiness Report into a single standardized master analytical schema.
+* **Leakage-Free Predictive Modeling:** Develop, train, and serialize an encapsulated regression pipeline predicting happiness scores strictly from independent socio-economic indicators while eliminating target leakage.
+* **Distributed Streaming Ingestion:** Deploy an Apache Kafka cluster via Docker Compose to stream observations event-by-event with partition key hashing and strict JSON event contract enforcement.
+* **Resilient Consumer Processing:** Implement a fault-tolerant Python consumer that records every raw event into an audit staging table before validation, gracefully handling malformed payloads without process crashes.
+* **Dimensional Warehouse & Reporting:** Persist scored predictions into a PostgreSQL Star Schema (Kimball methodology) and provide real-time analytical reporting through Power BI Desktop querying PostgreSQL directly via native SQL.
 
 ---
 
-## 2. End-to-End System Architecture
+## 2. Architecture Explanation
 
-The following diagram illustrates the complete data lifecycle, from bounded raw CSV files through streaming message queues to the analytical warehouse and BI dashboard:
+The system architecture decouples the data lifecycle into three cohesive phases: an **Offline Batch ML Preparation Phase**, a **Real-Time Streaming ETL Phase**, and an **Analytics & BI Consumption Phase**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -158,12 +126,12 @@ The following diagram illustrates the complete data lifecycle, from bounded raw 
 
 ---
 
-## 3. Exploratory Data Analysis (EDA) & Data Cleaning Decisions
+## 3. Data Cleaning Decisions
 
-### 3.1 Raw Dataset Profiling & Schema Drift
+### 3.1 Raw Schema Drift Analysis
 Across the 5 observation years (2015–2019), the raw datasets provided by the United Nations Sustainable Development Solutions Network exhibit significant schema drift:
 
-| Year | File | Rows | Cols | Score Column Name | Social/Family Column | Corruption Column | Region Present? |
+| Year | Raw File | Rows | Columns | Happiness Score Column | Social/Family Column | Corruption Column | Region Present? |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **2015** | `2015.csv` | 158 | 12 | `Happiness Score` | `Family` | `Trust (Government Corruption)` | Yes (10 regions) |
 | **2016** | `2016.csv` | 157 | 13 | `Happiness Score` | `Family` | `Trust (Government Corruption)` | Yes (10 regions) |
@@ -171,11 +139,11 @@ Across the 5 observation years (2015–2019), the raw datasets provided by the U
 | **2018** | `2018.csv` | 156 | 9 | `Score` | `Social support` | `Perceptions of corruption` | No (Omitted) |
 | **2019** | `2019.csv` | 156 | 9 | `Score` | `Social support` | `Perceptions of corruption` | No (Omitted) |
 
-### 3.2 Justification of Data Cleaning Decisions
+### 3.2 Cleaning & Harmonization Decisions with Technical Justifications
 
 1. **Standardization of Column Nomenclature:**
-   - *Decision:* All column names were converted to lowercase `snake_case` using an explicit mapping dictionary.
-   - *Justification:* Heterogeneous column names (periods in 2017, spaces in 2015/2016, generic names in 2018/2019) prevent programmatic concatenation and SQL portability. Lowercase snake_case conforms to PEP 8 and PostgreSQL identifier standards.
+   * *Decision:* Standardized all columns to canonical lowercase `snake_case`.
+   * *Justification:* Spaces in 2015/2016 headers and dots in 2017 headers cause syntax issues in SQL and programmatic workflows. Lowercase `snake_case` provides standard compatibility across Python, Pandas, Kafka, and PostgreSQL.
 
    ```
    Country / Country or region           ──► country
@@ -189,57 +157,57 @@ Across the 5 observation years (2015–2019), the raw datasets provided by the U
    Trust (Corruption) / Perceptions...   ──► corruption
    ```
 
-2. **Missing Value Treatment (UAE 2018 Corruption):**
-   - *Observation:* Across all $782 \times 10 = 7,820$ values in the unified dataset, exactly **one single null value** exists: `corruption` for the **United Arab Emirates** in 2018.
-   - *Decision:* Imputed using the longitudinal median of UAE's corruption perception from its other observation years ($0.3400$).
-   - *Justification:* Dropping the UAE 2018 record would discard valuable socio-economic data for an entire nation. Global mean imputation would introduce artificial bias by substituting a worldwide average that does not reflect UAE's institutional reality. Imputing the nation's historical median preserves statistical continuity without data distortion.
+2. **Missing Value Treatment (United Arab Emirates 2018):**
+   * *Observation:* Across all $782 \times 10 = 7,820$ data points, exactly **one single null value** exists: `corruption` for the **United Arab Emirates** in 2018.
+   * *Decision:* Imputed using the longitudinal median of UAE's corruption perception from other years ($0.3400$).
+   * *Justification:* Discarding the record would delete valid macroeconomic data for an entire country in 2018. Substituting a global mean would introduce distortion because UAE has specific governance metrics that differ from the global average. Longitudinal country-level imputation preserves data integrity without introducing macro-level bias.
 
 3. **Geopolitical Region Backfilling (2017–2019):**
-   - *Observation:* The `Region` column exists in 2015 and 2016 (10 unique regions) but was completely dropped in 2017, 2018, and 2019.
-   - *Decision:* Created an invariant reference map from the 2015/2016 data and backfilled the missing regions for 2017–2019 records based on country name.
-   - *Justification:* Geographical region is a vital dimensional hierarchy for analytical grouping and regional error evaluation (KPI 1). This resolved region completeness to 100% across all 782 records.
+   * *Observation:* The `Region` column was present in 2015 and 2016 but omitted in 2017, 2018, and 2019.
+   * *Decision:* Built an invariant reference catalog from the 2015/2016 data mapping each country to its geopolitical region and joined it to backfill the 2017–2019 records.
+   * *Justification:* Region is an essential analytical dimension for grouping, regional error evaluation, and dashboard slicing. This achieved 100% regional completeness across all 782 records.
 
 4. **Resulting Unified Schema (782 Rows):**
-   - [`data/processed/happiness_unified.csv`](data/processed/happiness_unified.csv): Contains 782 harmonized rows and 10 canonical columns:
+   * Stored in [`data/processed/happiness_unified.csv`](data/processed/happiness_unified.csv): Contains 782 rows and 10 canonical columns:
      `country`, `region`, `actual_happiness_score`, `gdp`, `family`, `health`, `freedom`, `generosity`, `corruption`, `year`.
 
 ---
 
-## 4. Feature Engineering & Leakage Prevention Decisions
+## 4. Feature Engineering Decisions
 
-### 4.1 Strict Elimination of Target Leakage
-Target leakage occurs when model inputs include information that directly derives from the target variable or will not be available in a real-time production inference environment. In this project, target leakage was eliminated through the following explicit decisions:
+### 4.1 Strict Prevention of Target Leakage
+Target leakage occurs when training features contain information derived directly from the target variable or unavailable during real-time streaming inference. In this project, target leakage was eliminated through the following explicit engineering decisions:
 
 1. **Elimination of `Happiness Rank` / `Overall rank`:**
-   - The rank is calculated directly by sorting `Happiness Score` descending ($Rank_i = \text{rank}(y_i)$).
-   - In a real-time streaming environment, incoming single events arrive independently; calculating a global rank before scoring is impossible.
-   - Including rank would yield an artificial $R^2 \approx 0.99$ while rendering the model completely non-functional for prospective forecasting.
+   * The rank is calculated directly by sorting the target score descending ($Rank_i = \text{rank}(y_i)$).
+   * In a real-time streaming architecture, individual events arrive independently; determining the global rank of a single country observation prior to scoring all records is mathematically impossible.
+   * Retaining rank would produce an artificial correlation ($R^2 \approx 0.99$) that completely fails in real-world prospective scoring.
 2. **Elimination of `Standard Error` / `Whisker.high` / `Whisker.low`:**
-   - Confidence bounds are derived from sample variance of survey responses around the mean score. Including them leaks the scale and bounds of the target score.
+   * Confidence intervals are derived from survey response sample variance around the mean score. Retaining them leaks the scale and bounds of the target score.
 3. **Elimination of `Dystopia Residual`:**
-   - In UN World Happiness methodology:
-     $$\text{Score} = \text{GDP} + \text{Family} + \text{Health} + \text{Freedom} + \text{Generosity} + \text{Corruption} + \text{Dystopia Residual}$$
-   - Including the Dystopia Residual reduces regression to a trivial addition problem ($y = \sum x_i + \text{residual}$). By removing it, the model must genuinely learn the underlying non-linear socio-economic patterns.
+   * The UN World Happiness Report constructs the score as:
+     $$\text{Score} = \sum_{j=1}^{6} \text{Factor}_j + \text{Dystopia Residual}$$
+   * Retaining the residual collapses regression into a trivial addition problem. Removing it forces the model to genuinely learn socio-economic interactions.
 
-### 4.2 Feature Space Selection & Justification
-The model operates strictly on 6 independent macroeconomic and institutional predictors:
+### 4.2 Feature Space Selection & Rationale
+The model operates strictly on 6 independent macroeconomic and institutional indicators:
 
 $$\mathbf{X} = [\text{gdp}, \text{family}, \text{health}, \text{freedom}, \text{generosity}, \text{corruption}] \in \mathbb{R}^6$$
 $$\mathbf{y} = \text{actual\_happiness\_score} \in \mathbb{R}$$
 
-* **`gdp` (Purchasing Power):** Economic baseline representing standard of living and material well-being.
-* **`family` (Social Support):** Societal safety net; subjective confidence of having someone to count on in times of trouble.
-* **`health` (Healthy Life Expectancy):** Physical well-being and access to healthcare infrastructure.
-* **`freedom` (Personal Autonomy):** Perceived freedom to make major life choices without coercion.
-* **`generosity` (Prosocial Behavior):** Propensity for charitable giving and community solidarity.
-* **`corruption` (Institutional Trust):** Public perception of integrity in government and business.
+* **`gdp` (GDP per Capita):** Economic baseline reflecting standard of living and material resources.
+* **`family` (Social Support):** Social safety net; subjective confidence of having support in times of crisis.
+* **`health` (Healthy Life Expectancy):** Physical longevity and access to healthcare infrastructure.
+* **`freedom` (Freedom to Make Life Choices):** Individual autonomy and civil liberties.
+* **`generosity` (Generosity):** Community solidarity and charitable activity.
+* **`corruption` (Perceptions of Corruption):** Institutional trust in government and commercial entities.
 
 ---
 
-## 5. Machine Learning Pipeline & Serialization
+## 5. Machine Learning Pipeline & Model Serialization
 
-### 5.1 Encapsulated Scikit-Learn Pipeline
-To guarantee that preprocessing transformations applied during offline training are replicated identically during real-time streaming inference, all transformations are bundled inside a Scikit-Learn `Pipeline`:
+### 5.1 Pipeline Encapsulation
+To ensure that preprocessing transformations learned during offline training are applied identically during real-time streaming inference, all transformations are encapsulated in a Scikit-Learn `Pipeline`:
 
 ```python
 pipeline = Pipeline(steps=[
@@ -256,36 +224,36 @@ pipeline = Pipeline(steps=[
 ])
 ```
 
-* **`SimpleImputer(strategy='median')`:** Guards against unexpected missing feature values in streaming payloads.
-* **`StandardScaler()`:** Normalizes features to zero mean and unit variance.
-* **`RandomForestRegressor`:** Selected over linear models because it effectively captures non-linear interactions (e.g., diminishing marginal utility of GDP) and is robust against extreme socio-economic leverage points.
+* **`SimpleImputer(strategy='median')`:** Handles any unexpected missing feature values at inference time.
+* **`StandardScaler()`:** Centers features to zero mean and unit variance.
+* **`RandomForestRegressor`:** Selected over linear models because it captures non-linear relationships (e.g., diminishing marginal utility of GDP on happiness) and provides robustness against outlier leverage points.
 
 ### 5.2 Model Evaluation (70% Train / 30% Test Split)
-The dataset was partitioned using `train_test_split(test_size=0.30, random_state=42)` yielding 547 training records and 235 testing records:
+The dataset was split using `train_test_split(test_size=0.30, random_state=42)` yielding 547 training records and 235 testing records:
 
 | Evaluation Metric | Training Set | Testing Set (30% Unseen) | Analytical Interpretation |
 | :--- | :---: | :---: | :--- |
-| **MAE (Mean Absolute Error)** | `0.1874` | **`0.4077`** | Average prediction deviation of ~0.40 points on a 1-to-10 scale. |
-| **RMSE (Root Mean Squared Error)** | `0.2512` | **`0.5239`** | Close proximity to MAE confirms absence of catastrophic outlier errors. |
+| **MAE (Mean Absolute Error)** | `0.1874` | **`0.4077`** | Average deviation of ~0.40 points on a 1-to-10 scale. |
+| **RMSE (Root Mean Squared Error)** | `0.2512` | **`0.5239`** | Close alignment with MAE confirms the absence of extreme prediction anomalies. |
 | **$R^2$ Score (Coefficient of Det.)** | `0.9510` | **`0.7802`** | The model explains **78.02%** of happiness variance on unseen data. |
 
-The entire trained pipeline was serialized to [`models/model.pkl`](models/model.pkl) (1.93 MB).
+The complete pipeline was serialized to [`models/model.pkl`](models/model.pkl) (1.93 MB) and verified for single-event real-time scoring.
 
 ---
 
-## 6. Kafka Architecture, Topic Topology & JSON Event Contract
+## 6. Kafka Pipeline & Event Contract Explanation
 
-### 6.1 Cluster Topology
-The streaming infrastructure is provisioned through Docker Compose:
-* **Zookeeper:** Port `2181` (cluster coordination and leader election).
+### 6.1 Cluster Topology & Configuration
+The messaging infrastructure is managed via Docker Compose:
+* **Zookeeper:** Port `2181` (cluster coordination).
 * **Kafka Broker:** Port `9092` (`PLAINTEXT_HOST://localhost:9092`, `PLAINTEXT://kafka:29092`).
 * **Topic Name:** `happiness-events`
 * **Partitions:** `3`
-* **Replication Factor:** `1` (single-broker local topology)
-* **Partitioning Strategy:** Events are keyed by `country`. Kafka computes $hash(\text{country}) \pmod 3$, ensuring that all events for a given country land on the same partition in sequential order.
+* **Replication Factor:** `1`
+* **Partitioning Strategy:** Events are keyed by `country`. Kafka applies Murmur2 hashing ($hash(\text{country}) \pmod 3$), guaranteeing that all historical events for any country land sequentially on the same partition while balancing consumer load across partitions.
 
 ### 6.2 JSON Event Contract Specification
-Every event published to the topic conforms strictly to the schema mandated on page 6 of the workshop guide:
+Every event emitted to `happiness-events` conforms strictly to the schema mandated on page 6 of the workshop guide:
 
 ```json
 {
@@ -303,16 +271,16 @@ Every event published to the topic conforms strictly to the schema mandated on p
 }
 ```
 
-### 6.3 Contract Validation Rules:
-1. `event_id`: Non-empty string. Unique identifier for 1:1 auditability.
-2. `country`: Non-empty string. Also utilized as the Kafka message key.
+### 6.3 Validation Rules:
+1. `event_id`: Non-empty string. Unique identifier for audit traceability.
+2. `country`: Non-empty string. Used as the Kafka message key.
 3. `year`: Integer representing the survey observation year ($1900 \le year \le 2100$).
 4. Features (`gdp`, `family`, `health`, `freedom`, `generosity`, `corruption`): Finite floating-point numbers $\ge 0$.
-5. `actual_happiness_score`: Numeric float ($0.0 \le score \le 10.0$). **Used exclusively for model evaluation and residual tracking; NEVER fed into the regression model.**
+5. `actual_happiness_score`: Numeric float between $0.0$ and $10.0$. Used **strictly for evaluation and tracking**; never passed to the regression model.
 6. `event_time`: Valid ISO-8601 formatted timestamp string (`YYYY-MM-DDTHH:MM:SS`).
 
 ### 6.4 Injected Malformed Test Cases (Resilience Verification)
-To prove that the pipeline handles corrupted data gracefully without crashing, `kafka/producer.py` injects 4 deliberate anomaly events:
+To verify that the consumer handles corrupted data gracefully without crashing, `kafka/producer.py` injects 4 deliberate anomaly events:
 * **`ERR-001` (Missing Key):** Record omitted the required `country` key.
 * **`ERR-002` (Type Mismatch):** `gdp` supplied as string `"INVALID_GDP"`.
 * **`ERR-003` (Domain Violation):** `freedom` provided as negative value `-0.5`.
@@ -320,9 +288,9 @@ To prove that the pipeline handles corrupted data gracefully without crashing, `
 
 ---
 
-## 7. PostgreSQL Star Schema & Dimensional Modeling
+## 7. Database Schema & Dimensional Modeling
 
-The database schema defined in [`sql/create_tables.sql`](sql/create_tables.sql) implements an enterprise Kimball dimensional star schema:
+The analytical schema defined in [`sql/create_tables.sql`](sql/create_tables.sql) implements an enterprise Kimball dimensional star schema in PostgreSQL:
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -365,17 +333,17 @@ The database schema defined in [`sql/create_tables.sql`](sql/create_tables.sql) 
 └───────────────────────────┘  └─────────────────────────┘
 ```
 
-### Table Roles & Optimization:
-* **`raw_happiness_events` (Staging/Audit Table):** Stores raw JSON payloads upon arrival. Records processing statuses (`RECEIVED`, `VALID`, `INVALID_SCHEMA`, `INVALID_VALUES`). Supports complete historical auditability.
-* **`dim_country` (Conformed Dimension):** Unique country names and geopolitical regions.
+### Table Roles:
+* **`raw_happiness_events` (Staging/Audit Table):** Stores raw JSON payloads upon arrival. Records processing statuses (`RECEIVED`, `VALID`, `INVALID_SCHEMA`, `INVALID_VALUES`). Enables complete historical auditability.
+* **`dim_country` (Conformed Dimension):** Unique country names and geopolitical regions with an index on `country_name`.
 * **`dim_date` (Conformed Dimension):** Temporal hierarchy (year, month, day, hour, minute) with a unique constraint on `(year, event_time)`.
-* **`fact_predictions` (Fact Table):** Contains continuous metrics (`actual_score`, `predicted_score`, `prediction_error`), the 6 feature values, and foreign keys to dimensions and the raw landing record.
+* **`fact_predictions` (Fact Table):** Central fact table containing measures (`actual_score`, `predicted_score`, `prediction_error`), the 6 feature values, and foreign keys referencing dimensions and the raw landing record.
 
 ---
 
-## 8. Real-Time Streaming Consumer & Fault-Tolerant Logic
+## 8. Real-Time Consumer & Fault-Tolerant Processing
 
-Implemented in [`kafka/consumer.py`](kafka/consumer.py), the consumer operates under consumer group `happiness-ml-team` with a 3-step fault-tolerant pipeline:
+Implemented in [`kafka/consumer.py`](kafka/consumer.py), the consumer operates under consumer group `happiness-ml-team` with a 3-step fault-tolerant workflow:
 
 ```
   Incoming Kafka Message
@@ -408,11 +376,15 @@ Implemented in [`kafka/consumer.py`](kafka/consumer.py), the consumer operates u
   └────────────────────────┘   └────────────────────────────────────┘
 ```
 
+1. **Transactional First-Landing Pattern:** Every event is persisted into `raw_happiness_events` with status `'RECEIVED'` inside a database transaction before parsing. Even if the consumer fails during ML scoring, the audit record is safely preserved.
+2. **Contract & Value Validation:** If validation fails, the status is updated to `'INVALID_SCHEMA'` or `'INVALID_VALUES'` with the exact trace logged in `error_message`. The consumer commits the Kafka offset and continues immediately to the next message.
+3. **Real-Time ML Scoring & Star Upserts:** For valid messages, the model predicts the score, calculates the residual, upserts dimensional keys, and stores the completed prediction in `fact_predictions`.
+
 ---
 
-## 9. Analytical KPIs & Empirical Findings
+## 9. Analytical KPIs & Findings
 
-The analytical queries defined in [`sql/kpis.sql`](sql/kpis.sql) evaluate the stored predictions directly against PostgreSQL. The production stream yielded the following verified metrics:
+The analytical SQL script [`sql/kpis.sql`](sql/kpis.sql) queries PostgreSQL directly. The production stream yielded the following verified metrics:
 
 ### KPI 1: Average Prediction Error (Global & Regional)
 * **Total Valid Predictions:** `782` events
@@ -472,16 +444,16 @@ The analytical queries defined in [`sql/kpis.sql`](sql/kpis.sql) evaluate the st
 
 ---
 
-## 10. Power BI Desktop Dashboard Integration
+## 10. Dashboard Explanation
 
-The dashboard is provided as an official Power BI template file:
+The analytical dashboard is provided as an official Power BI template file:
 * **Template File:** [`dashboards/Workshop3_Happiness_Dashboard.pbit`](dashboards/Workshop3_Happiness_Dashboard.pbit)
 
 > [!IMPORTANT]
-> **Database-Driven Architecture:** In accordance with the mandatory requirement on page 10 of the guide (*"The dashboard must query the database, NOT CSV files"*), this dashboard connects directly to PostgreSQL (`localhost:6432`, database: `happiness_db`) using native SQL queries.
+> **Database-Driven Architecture:** In strict compliance with page 10 of the workshop guide (*"The dashboard must query the database, NOT CSV files"*), this dashboard connects directly to PostgreSQL (`localhost:6432`, database: `happiness_db`) using native SQL queries.
 
-### Dashboard Layout & 13 Visual Components:
-1. **Header Banner:** Formal institutional banner with title, course code, and author metadata.
+### Visual Components & Layout (13 Visuals):
+1. **Header Banner:** Formal title, course metadata, and author identification.
 2. **Metric Card 1:** Total Ingested Predictions (`782`).
 3. **Metric Card 2:** Global Mean Absolute Error — MAE (`0.2427`).
 4. **Metric Card 3:** Global Root Mean Squared Error — RMSE (`0.3434`).
@@ -493,13 +465,13 @@ The dashboard is provided as an official Power BI template file:
 10. **Donut Chart (KPI 3 / Audit):** Ingestion audit showing valid events (782) vs. filtered anomalies (4).
 11. **Line Chart (KPI 4):** Longitudinal trend comparing actual vs. predicted happiness across 2015–2019.
 12. **Region Slicer:** Interactive dropdown filter for dynamic regional analysis.
-13. **Year Slicer:** Interactive slider/dropdown filter for temporal filtering.
+13. **Year Slicer:** Interactive dropdown/slider for temporal filtering.
 
 ---
 
-## 11. Repository Structure (Strict Rubric Alignment)
+## 11. Repository Structure
 
-The repository contains **exactly 19 tracked files**, adhering 1:1 to the recommended structure in Section 8 of the workshop guide:
+The repository contains **exactly 19 tracked files**, adhering strictly to the recommended structure in Section 8 of the workshop guide:
 
 ```
 project/
@@ -530,12 +502,12 @@ project/
 ├── docker-compose.yml       # Zookeeper, Kafka broker, and PostgreSQL infrastructure
 ├── requirements.txt         # Pinned production Python dependencies
 ├── .gitignore               # Strict git exclusion rules
-└── README.md                # Comprehensive technical documentation & presentation guide
+└── README.md                # Comprehensive technical documentation
 ```
 
 ---
 
-## 12. Step-by-Step Execution Guide
+## 12. Execution Instructions
 
 ### Prerequisites
 * Python 3.10+ (tested on Python 3.12)
